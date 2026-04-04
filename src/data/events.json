@@ -1,0 +1,85 @@
+[
+  {
+    "id": "fifa-2026",
+    "name": "FIFA World Cup 2026",
+    "shortName": "FIFA 2026",
+    "description": "The 23rd FIFA World Cup, hosted by the United States, Canada, and Mexico. 48 teams, 104 matches across 16 venues.",
+    "startDate": "2026-06-11",
+    "endDate": "2026-07-19",
+    "imageUrl": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80&fit=crop",
+    "venueIds": [
+      "metlife",
+      "sofi",
+      "at-and-t",
+      "hard-rock",
+      "nrg",
+      "mercedes-benz",
+      "lincoln-financial",
+      "lumen-field",
+      "gillette",
+      "bc-place",
+      "bmo-field",
+      "azteca",
+      "guadalajara",
+      "monterrey",
+      "rose-bowl",
+      "levis"
+    ],
+    "type": "sports"
+  },
+  {
+    "id": "bts-world-tour-2026",
+    "name": "BTS 2026–2027 World Tour",
+    "shortName": "BTS World Tour",
+    "description": "BTS reunites for a massive global stadium tour spanning North America, Europe, and Asia.",
+    "startDate": "2026-09-12",
+    "endDate": "2027-03-15",
+    "imageUrl": "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&q=80&fit=crop",
+    "venueIds": [],
+    "type": "concert"
+  },
+  {
+    "id": "ed-sheeran-tour-2026",
+    "name": "Ed Sheeran World Tour 2026",
+    "shortName": "Ed Sheeran",
+    "description": "Ed Sheeran brings his stadium tour across major cities worldwide with intimate acoustic sets and full production.",
+    "startDate": "2026-05-01",
+    "endDate": "2026-11-30",
+    "imageUrl": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=80&fit=crop",
+    "venueIds": [],
+    "type": "concert"
+  },
+  {
+    "id": "the-weeknd-tour-2026",
+    "name": "The Weeknd: After Hours Til Dawn Tour",
+    "shortName": "The Weeknd",
+    "description": "The Weeknd continues his record-breaking global stadium tour with a brand-new production.",
+    "startDate": "2026-06-20",
+    "endDate": "2026-12-15",
+    "imageUrl": "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=800&q=80&fit=crop",
+    "venueIds": [],
+    "type": "concert"
+  },
+  {
+    "id": "bruno-mars-tour-2026",
+    "name": "Bruno Mars World Tour 2026",
+    "shortName": "Bruno Mars",
+    "description": "Bruno Mars takes his legendary live show on the road with a new world tour hitting stadiums and arenas.",
+    "startDate": "2026-07-10",
+    "endDate": "2027-01-20",
+    "imageUrl": "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=800&q=80&fit=crop",
+    "venueIds": [],
+    "type": "concert"
+  },
+  {
+    "id": "music-festival-2027",
+    "name": "Music Festival",
+    "shortName": "Music Festival",
+    "description": "Multi-day outdoor music festivals featuring top artists across multiple stages.",
+    "startDate": "2027-04-09",
+    "endDate": "2027-04-18",
+    "imageUrl": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80&fit=crop",
+    "venueIds": [],
+    "type": "festival"
+  }
+]

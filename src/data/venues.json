@@ -1,0 +1,981 @@
+[
+  {
+    "id": "metlife",
+    "name": "MetLife Stadium",
+    "city": "New York / New Jersey",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Metlife_stadium_%28Aerial_view%29.jpg/1280px-Metlife_stadium_%28Aerial_view%29.jpg",
+    "coords": {
+      "lat": 40.8128,
+      "lng": -74.0742
+    },
+    "transitStations": [
+      {
+        "name": "Secaucus Junction",
+        "coords": {
+          "lat": 40.7614,
+          "lng": -74.0758
+        },
+        "lines": [
+          "NJ Transit Northeast Corridor",
+          "NJ Transit Main/Bergen Lines",
+          "NJ Transit North Jersey Coast Line"
+        ],
+        "transitMinutes": 20,
+        "walkMinutes": 5
+      },
+      {
+        "name": "Meadowlands Station (event service)",
+        "coords": {
+          "lat": 40.8122,
+          "lng": -74.072
+        },
+        "lines": [
+          "NJ Transit Meadowlands Rail (event day)"
+        ],
+        "transitMinutes": 5,
+        "walkMinutes": 3
+      },
+      {
+        "name": "Hoboken Terminal",
+        "coords": {
+          "lat": 40.7352,
+          "lng": -74.0281
+        },
+        "lines": [
+          "NJ Transit",
+          "PATH",
+          "NY Waterway Ferry"
+        ],
+        "transitMinutes": 35,
+        "walkMinutes": 5
+      },
+      {
+        "name": "New York Penn Station",
+        "coords": {
+          "lat": 40.7505,
+          "lng": -73.9935
+        },
+        "lines": [
+          "NJ Transit",
+          "Amtrak",
+          "LIRR",
+          "NYC Subway 1/2/3/A/C/E"
+        ],
+        "transitMinutes": 40,
+        "walkMinutes": 5
+      },
+      {
+        "name": "Newark Penn Station",
+        "coords": {
+          "lat": 40.7345,
+          "lng": -74.1644
+        },
+        "lines": [
+          "NJ Transit",
+          "PATH",
+          "Newark Light Rail"
+        ],
+        "transitMinutes": 30,
+        "walkMinutes": 5
+      }
+    ]
+  },
+  {
+    "id": "sofi",
+    "name": "SoFi Stadium",
+    "city": "Los Angeles",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/SoFi_Stadium_2023.jpg/1280px-SoFi_Stadium_2023.jpg",
+    "coords": {
+      "lat": 33.9535,
+      "lng": -118.3392
+    },
+    "transitStations": [
+      {
+        "name": "Downtown Inglewood Station",
+        "coords": {
+          "lat": 33.9617,
+          "lng": -118.3531
+        },
+        "lines": [
+          "LA Metro K Line"
+        ],
+        "transitMinutes": 10,
+        "walkMinutes": 15
+      },
+      {
+        "name": "Hawthorne/Lennox Station",
+        "coords": {
+          "lat": 33.9381,
+          "lng": -118.35
+        },
+        "lines": [
+          "LA Metro C Line (Green)"
+        ],
+        "transitMinutes": 10,
+        "walkMinutes": 20
+      },
+      {
+        "name": "Aviation/Century Station",
+        "coords": {
+          "lat": 33.9425,
+          "lng": -118.3808
+        },
+        "lines": [
+          "LA Metro C Line (Green)",
+          "LA Metro K Line"
+        ],
+        "transitMinutes": 15,
+        "walkMinutes": 20
+      },
+      {
+        "name": "7th Street/Metro Center",
+        "coords": {
+          "lat": 33.9543,
+          "lng": -118.2585
+        },
+        "lines": [
+          "LA Metro A Line",
+          "LA Metro E Line",
+          "LA Metro B Line",
+          "LA Metro D Line"
+        ],
+        "transitMinutes": 40,
+        "walkMinutes": 5
+      }
+    ]
+  },
+  {
+    "id": "at-and-t",
+    "name": "AT&T Stadium",
+    "city": "Dallas",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Arlington_June_2020_4_%28AT%26T_Stadium%29.jpg/1280px-Arlington_June_2020_4_%28AT%26T_Stadium%29.jpg",
+    "coords": {
+      "lat": 32.7473,
+      "lng": -97.0945
+    },
+    "transitStations": [
+      {
+        "name": "CentrePort/DFW Airport Station",
+        "coords": {
+          "lat": 32.8981,
+          "lng": -97.0431
+        },
+        "lines": [
+          "TRE (Trinity Railway Express)"
+        ],
+        "transitMinutes": 30,
+        "walkMinutes": 5
+      },
+      {
+        "name": "Dallas Union Station",
+        "coords": {
+          "lat": 32.7757,
+          "lng": -96.8073
+        },
+        "lines": [
+          "TRE",
+          "DART Rail",
+          "Amtrak"
+        ],
+        "transitMinutes": 45,
+        "walkMinutes": 5
+      },
+      {
+        "name": "Fort Worth T&P Station",
+        "coords": {
+          "lat": 32.7483,
+          "lng": -97.3308
+        },
+        "lines": [
+          "TRE"
+        ],
+        "transitMinutes": 40,
+        "walkMinutes": 5
+      }
+    ]
+  },
+  {
+    "id": "hard-rock",
+    "name": "Hard Rock Stadium",
+    "city": "Miami",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Hard_Rock_Stadium_for_Super_Bowl_LIV_%2849606710103%29.jpg/1280px-Hard_Rock_Stadium_for_Super_Bowl_LIV_%2849606710103%29.jpg",
+    "coords": {
+      "lat": 25.958,
+      "lng": -80.2389
+    },
+    "transitStations": [
+      {
+        "name": "Opa-locka Station",
+        "coords": {
+          "lat": 25.9021,
+          "lng": -80.2325
+        },
+        "lines": [
+          "Tri-Rail",
+          "Metrorail (transfer at Tri-Rail)"
+        ],
+        "transitMinutes": 15,
+        "walkMinutes": 10
+      },
+      {
+        "name": "Golden Glades Interchange",
+        "coords": {
+          "lat": 25.9113,
+          "lng": -80.2
+        },
+        "lines": [
+          "Miami-Dade Bus Routes 95 Express"
+        ],
+        "transitMinutes": 15,
+        "walkMinutes": 15
+      },
+      {
+        "name": "Government Center Station",
+        "coords": {
+          "lat": 25.7743,
+          "lng": -80.1937
+        },
+        "lines": [
+          "Metrorail Green/Orange",
+          "Metromover"
+        ],
+        "transitMinutes": 45,
+        "walkMinutes": 5
+      },
+      {
+        "name": "Miami Airport Station",
+        "coords": {
+          "lat": 25.7959,
+          "lng": -80.271
+        },
+        "lines": [
+          "Metrorail Orange Line",
+          "Tri-Rail"
+        ],
+        "transitMinutes": 35,
+        "walkMinutes": 5
+      }
+    ]
+  },
+  {
+    "id": "nrg",
+    "name": "NRG Stadium",
+    "city": "Houston",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Nrg_stadium.jpg/1280px-Nrg_stadium.jpg",
+    "coords": {
+      "lat": 29.6847,
+      "lng": -95.4107
+    },
+    "transitStations": [
+      {
+        "name": "Stadium Park/Astrodome Station",
+        "coords": {
+          "lat": 29.6849,
+          "lng": -95.4089
+        },
+        "lines": [
+          "METRORail Red Line"
+        ],
+        "transitMinutes": 3,
+        "walkMinutes": 5
+      },
+      {
+        "name": "Fannin South Station",
+        "coords": {
+          "lat": 29.6741,
+          "lng": -95.4076
+        },
+        "lines": [
+          "METRORail Red Line"
+        ],
+        "transitMinutes": 5,
+        "walkMinutes": 10
+      },
+      {
+        "name": "Main Street Square Station",
+        "coords": {
+          "lat": 29.7534,
+          "lng": -95.363
+        },
+        "lines": [
+          "METRORail Red Line",
+          "METRORail Green/Purple Lines"
+        ],
+        "transitMinutes": 25,
+        "walkMinutes": 3
+      },
+      {
+        "name": "Theater District Station",
+        "coords": {
+          "lat": 29.7601,
+          "lng": -95.3619
+        },
+        "lines": [
+          "METRORail Red Line"
+        ],
+        "transitMinutes": 28,
+        "walkMinutes": 3
+      }
+    ]
+  },
+  {
+    "id": "mercedes-benz",
+    "name": "Mercedes-Benz Stadium",
+    "city": "Atlanta",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Mercedes_Benz_Stadium_time_lapse_capture_2017-08-13.jpg/1280px-Mercedes_Benz_Stadium_time_lapse_capture_2017-08-13.jpg",
+    "coords": {
+      "lat": 33.7553,
+      "lng": -84.4006
+    },
+    "transitStations": [
+      {
+        "name": "Vine City Station",
+        "coords": {
+          "lat": 33.7565,
+          "lng": -84.4044
+        },
+        "lines": [
+          "MARTA Blue/Green Line"
+        ],
+        "transitMinutes": 3,
+        "walkMinutes": 5
+      },
+      {
+        "name": "GWCC/CNN Center Station",
+        "coords": {
+          "lat": 33.7579,
+          "lng": -84.396
+        },
+        "lines": [
+          "MARTA Blue/Green Line"
+        ],
+        "transitMinutes": 5,
+        "walkMinutes": 7
+      },
+      {
+        "name": "Five Points Station",
+        "coords": {
+          "lat": 33.7539,
+          "lng": -84.3915
+        },
+        "lines": [
+          "MARTA Red/Gold/Blue/Green Lines"
+        ],
+        "transitMinutes": 7,
+        "walkMinutes": 10
+      },
+      {
+        "name": "Airport Station",
+        "coords": {
+          "lat": 33.6407,
+          "lng": -84.4467
+        },
+        "lines": [
+          "MARTA Red/Gold Line"
+        ],
+        "transitMinutes": 20,
+        "walkMinutes": 3
+      }
+    ]
+  },
+  {
+    "id": "lincoln-financial",
+    "name": "Lincoln Financial Field",
+    "city": "Philadelphia",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Lincoln_Financial_Field_%28Aerial_view%29.jpg/1280px-Lincoln_Financial_Field_%28Aerial_view%29.jpg",
+    "coords": {
+      "lat": 39.9008,
+      "lng": -75.1675
+    },
+    "transitStations": [
+      {
+        "name": "NRG Station (AT&T Station)",
+        "coords": {
+          "lat": 39.9048,
+          "lng": -75.1712
+        },
+        "lines": [
+          "SEPTA Broad Street Line"
+        ],
+        "transitMinutes": 3,
+        "walkMinutes": 5
+      },
+      {
+        "name": "Pattison Station",
+        "coords": {
+          "lat": 39.9058,
+          "lng": -75.171
+        },
+        "lines": [
+          "SEPTA Broad Street Line"
+        ],
+        "transitMinutes": 3,
+        "walkMinutes": 8
+      },
+      {
+        "name": "City Hall Station",
+        "coords": {
+          "lat": 39.9524,
+          "lng": -75.1636
+        },
+        "lines": [
+          "SEPTA Broad Street Line",
+          "SEPTA Market-Frankford Line"
+        ],
+        "transitMinutes": 15,
+        "walkMinutes": 3
+      },
+      {
+        "name": "30th Street Station",
+        "coords": {
+          "lat": 39.9562,
+          "lng": -75.1818
+        },
+        "lines": [
+          "Amtrak",
+          "SEPTA Regional Rail",
+          "NJ Transit Atlantic City Line"
+        ],
+        "transitMinutes": 20,
+        "walkMinutes": 5
+      }
+    ]
+  },
+  {
+    "id": "lumen-field",
+    "name": "Lumen Field",
+    "city": "Seattle",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/53/Qwest_Field_North.jpg",
+    "coords": {
+      "lat": 47.5952,
+      "lng": -122.3316
+    },
+    "transitStations": [
+      {
+        "name": "Stadium Station",
+        "coords": {
+          "lat": 47.5908,
+          "lng": -122.3272
+        },
+        "lines": [
+          "Link Light Rail 1 Line"
+        ],
+        "transitMinutes": 3,
+        "walkMinutes": 5
+      },
+      {
+        "name": "International District/Chinatown Station",
+        "coords": {
+          "lat": 47.5983,
+          "lng": -122.3278
+        },
+        "lines": [
+          "Link Light Rail 1 Line",
+          "Sounder Commuter Rail"
+        ],
+        "transitMinutes": 5,
+        "walkMinutes": 8
+      },
+      {
+        "name": "Westlake Station",
+        "coords": {
+          "lat": 47.6112,
+          "lng": -122.3372
+        },
+        "lines": [
+          "Link Light Rail 1 Line",
+          "Seattle Monorail"
+        ],
+        "transitMinutes": 8,
+        "walkMinutes": 3
+      },
+      {
+        "name": "King Street Station",
+        "coords": {
+          "lat": 47.5989,
+          "lng": -122.3302
+        },
+        "lines": [
+          "Amtrak Cascades",
+          "Sounder Commuter Rail"
+        ],
+        "transitMinutes": 5,
+        "walkMinutes": 8
+      },
+      {
+        "name": "SeaTac Airport Station",
+        "coords": {
+          "lat": 47.4437,
+          "lng": -122.2964
+        },
+        "lines": [
+          "Link Light Rail 1 Line"
+        ],
+        "transitMinutes": 40,
+        "walkMinutes": 3
+      }
+    ]
+  },
+  {
+    "id": "gillette",
+    "name": "Gillette Stadium",
+    "city": "Boston",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Gillette_Stadium_%28Top_View%29.jpg/1280px-Gillette_Stadium_%28Top_View%29.jpg",
+    "coords": {
+      "lat": 42.0909,
+      "lng": -71.2643
+    },
+    "transitStations": [
+      {
+        "name": "Foxborough Station (event service)",
+        "coords": {
+          "lat": 42.0928,
+          "lng": -71.2615
+        },
+        "lines": [
+          "MBTA Commuter Rail Franklin/Foxboro Line (event day)"
+        ],
+        "transitMinutes": 5,
+        "walkMinutes": 5
+      },
+      {
+        "name": "South Station",
+        "coords": {
+          "lat": 42.3523,
+          "lng": -71.0553
+        },
+        "lines": [
+          "MBTA Red Line",
+          "MBTA Commuter Rail",
+          "Amtrak"
+        ],
+        "transitMinutes": 55,
+        "walkMinutes": 3
+      },
+      {
+        "name": "Back Bay Station",
+        "coords": {
+          "lat": 42.3474,
+          "lng": -71.0757
+        },
+        "lines": [
+          "MBTA Orange Line",
+          "MBTA Commuter Rail",
+          "Amtrak"
+        ],
+        "transitMinutes": 50,
+        "walkMinutes": 3
+      },
+      {
+        "name": "Providence Station",
+        "coords": {
+          "lat": 41.8291,
+          "lng": -71.4149
+        },
+        "lines": [
+          "MBTA Commuter Rail Providence Line",
+          "Amtrak"
+        ],
+        "transitMinutes": 45,
+        "walkMinutes": 5
+      }
+    ]
+  },
+  {
+    "id": "bc-place",
+    "name": "BC Place",
+    "city": "Vancouver",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/BC_Place_2015_Women%27s_FIFA_World_Cup.jpg/1280px-BC_Place_2015_Women%27s_FIFA_World_Cup.jpg",
+    "coords": {
+      "lat": 49.2768,
+      "lng": -123.1117
+    },
+    "transitStations": [
+      {
+        "name": "Stadium–Chinatown Station",
+        "coords": {
+          "lat": 49.2797,
+          "lng": -123.1098
+        },
+        "lines": [
+          "SkyTrain Expo Line",
+          "SkyTrain Millennium Line"
+        ],
+        "transitMinutes": 3,
+        "walkMinutes": 5
+      },
+      {
+        "name": "Yaletown–Roundhouse Station",
+        "coords": {
+          "lat": 49.2744,
+          "lng": -123.1219
+        },
+        "lines": [
+          "SkyTrain Canada Line"
+        ],
+        "transitMinutes": 5,
+        "walkMinutes": 10
+      },
+      {
+        "name": "Waterfront Station",
+        "coords": {
+          "lat": 49.2856,
+          "lng": -123.1116
+        },
+        "lines": [
+          "SkyTrain Expo Line",
+          "SkyTrain Canada Line",
+          "West Coast Express",
+          "SeaBus"
+        ],
+        "transitMinutes": 5,
+        "walkMinutes": 10
+      },
+      {
+        "name": "YVR-Airport Station",
+        "coords": {
+          "lat": 49.1947,
+          "lng": -123.1815
+        },
+        "lines": [
+          "SkyTrain Canada Line"
+        ],
+        "transitMinutes": 28,
+        "walkMinutes": 3
+      }
+    ]
+  },
+  {
+    "id": "bmo-field",
+    "name": "BMO Field",
+    "city": "Toronto",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d2/BMO_Field_in_2016.png",
+    "coords": {
+      "lat": 43.6332,
+      "lng": -79.4186
+    },
+    "transitStations": [
+      {
+        "name": "Exhibition Station",
+        "coords": {
+          "lat": 43.6361,
+          "lng": -79.4236
+        },
+        "lines": [
+          "GO Transit Lakeshore West Line"
+        ],
+        "transitMinutes": 5,
+        "walkMinutes": 8
+      },
+      {
+        "name": "Exhibition Loop",
+        "coords": {
+          "lat": 43.6369,
+          "lng": -79.4198
+        },
+        "lines": [
+          "TTC Streetcar 509 Harbourfront",
+          "TTC Streetcar 511 Bathurst"
+        ],
+        "transitMinutes": 5,
+        "walkMinutes": 8
+      },
+      {
+        "name": "Union Station",
+        "coords": {
+          "lat": 43.6453,
+          "lng": -79.3806
+        },
+        "lines": [
+          "TTC Line 1 Yonge-University",
+          "GO Transit",
+          "VIA Rail",
+          "UP Express"
+        ],
+        "transitMinutes": 15,
+        "walkMinutes": 3
+      },
+      {
+        "name": "Bathurst Station",
+        "coords": {
+          "lat": 43.6662,
+          "lng": -79.4112
+        },
+        "lines": [
+          "TTC Line 2 Bloor-Danforth"
+        ],
+        "transitMinutes": 20,
+        "walkMinutes": 5
+      }
+    ]
+  },
+  {
+    "id": "azteca",
+    "name": "Estadio Azteca",
+    "city": "Mexico City",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/96/Azteca_entrance.jpg",
+    "coords": {
+      "lat": 19.3029,
+      "lng": -99.1505
+    },
+    "transitStations": [
+      {
+        "name": "Estadio Azteca Station",
+        "coords": {
+          "lat": 19.3007,
+          "lng": -99.1507
+        },
+        "lines": [
+          "Mexico City Metro Line 12 (Gold)"
+        ],
+        "transitMinutes": 3,
+        "walkMinutes": 5
+      },
+      {
+        "name": "Coyoacán Station",
+        "coords": {
+          "lat": 19.35,
+          "lng": -99.1566
+        },
+        "lines": [
+          "Mexico City Metro Line 3"
+        ],
+        "transitMinutes": 15,
+        "walkMinutes": 5
+      },
+      {
+        "name": "Taxqueña Station",
+        "coords": {
+          "lat": 19.3443,
+          "lng": -99.1407
+        },
+        "lines": [
+          "Mexico City Metro Line 2",
+          "Tren Ligero"
+        ],
+        "transitMinutes": 12,
+        "walkMinutes": 5
+      },
+      {
+        "name": "Zócalo Station",
+        "coords": {
+          "lat": 19.4329,
+          "lng": -99.1331
+        },
+        "lines": [
+          "Mexico City Metro Line 2"
+        ],
+        "transitMinutes": 35,
+        "walkMinutes": 3
+      }
+    ]
+  },
+  {
+    "id": "guadalajara",
+    "name": "Estadio Akron",
+    "city": "Guadalajara",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Estadio_Akron_02-07-2022_cabecera_sur_lado_derecho_%283%29.jpg/1280px-Estadio_Akron_02-07-2022_cabecera_sur_lado_derecho_%283%29.jpg",
+    "coords": {
+      "lat": 20.681,
+      "lng": -103.4625
+    },
+    "transitStations": [
+      {
+        "name": "Periférico Norte / Line 3 (nearest)",
+        "coords": {
+          "lat": 20.7012,
+          "lng": -103.4173
+        },
+        "lines": [
+          "Mi Macro Periférico",
+          "Guadalajara Light Rail Line 3"
+        ],
+        "transitMinutes": 20,
+        "walkMinutes": 15
+      },
+      {
+        "name": "Guadalajara Centro Station",
+        "coords": {
+          "lat": 20.6753,
+          "lng": -103.3476
+        },
+        "lines": [
+          "Guadalajara Light Rail Line 1",
+          "Line 2"
+        ],
+        "transitMinutes": 35,
+        "walkMinutes": 5
+      }
+    ]
+  },
+  {
+    "id": "monterrey",
+    "name": "Estadio BBVA",
+    "city": "Monterrey",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Estadio_BBVA_Bancomer_%281%29.jpg/1280px-Estadio_BBVA_Bancomer_%281%29.jpg",
+    "coords": {
+      "lat": 25.6701,
+      "lng": -100.2437
+    },
+    "transitStations": [
+      {
+        "name": "Exposición Station",
+        "coords": {
+          "lat": 25.672,
+          "lng": -100.2661
+        },
+        "lines": [
+          "Monterrey Metrorrey Line 2"
+        ],
+        "transitMinutes": 10,
+        "walkMinutes": 15
+      },
+      {
+        "name": "Zaragoza Station",
+        "coords": {
+          "lat": 25.6731,
+          "lng": -100.3118
+        },
+        "lines": [
+          "Monterrey Metrorrey Line 1",
+          "Line 2"
+        ],
+        "transitMinutes": 20,
+        "walkMinutes": 5
+      },
+      {
+        "name": "Cuauhtémoc Station",
+        "coords": {
+          "lat": 25.6708,
+          "lng": -100.305
+        },
+        "lines": [
+          "Monterrey Metrorrey Line 1"
+        ],
+        "transitMinutes": 18,
+        "walkMinutes": 5
+      }
+    ]
+  },
+  {
+    "id": "rose-bowl",
+    "name": "Rose Bowl Stadium",
+    "city": "Los Angeles (Pasadena)",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/2018.06.17_Over_the_Rose_Bowl%2C_Pasadena%2C_CA_USA_0039_%2842855669451%29_%28cropped%29.jpg/1280px-2018.06.17_Over_the_Rose_Bowl%2C_Pasadena%2C_CA_USA_0039_%2842855669451%29_%28cropped%29.jpg",
+    "coords": {
+      "lat": 34.1613,
+      "lng": -118.1676
+    },
+    "transitStations": [
+      {
+        "name": "Memorial Park Station",
+        "coords": {
+          "lat": 34.1486,
+          "lng": -118.1482
+        },
+        "lines": [
+          "LA Metro L Line (Gold)"
+        ],
+        "transitMinutes": 10,
+        "walkMinutes": 25
+      },
+      {
+        "name": "Del Mar Station",
+        "coords": {
+          "lat": 34.1419,
+          "lng": -118.1502
+        },
+        "lines": [
+          "LA Metro L Line (Gold)"
+        ],
+        "transitMinutes": 12,
+        "walkMinutes": 25
+      },
+      {
+        "name": "Union Station (LAUS)",
+        "coords": {
+          "lat": 34.0561,
+          "lng": -118.2365
+        },
+        "lines": [
+          "LA Metro L Line (Gold)",
+          "LA Metro B/D Lines",
+          "Metrolink",
+          "Amtrak"
+        ],
+        "transitMinutes": 30,
+        "walkMinutes": 5
+      }
+    ]
+  },
+  {
+    "id": "levis",
+    "name": "Levi's Stadium",
+    "city": "San Francisco (Santa Clara)",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Levi%27s_Stadium_in_February_2016_prior_to_Super_Bowl_50_%2824398261729%29.jpg/1280px-Levi%27s_Stadium_in_February_2016_prior_to_Super_Bowl_50_%2824398261729%29.jpg",
+    "coords": {
+      "lat": 37.4033,
+      "lng": -121.9694
+    },
+    "transitStations": [
+      {
+        "name": "Great America Station",
+        "coords": {
+          "lat": 37.4088,
+          "lng": -121.9764
+        },
+        "lines": [
+          "VTA Light Rail",
+          "ACE Train",
+          "Capitol Corridor"
+        ],
+        "transitMinutes": 5,
+        "walkMinutes": 8
+      },
+      {
+        "name": "Santa Clara Station",
+        "coords": {
+          "lat": 37.3533,
+          "lng": -121.9363
+        },
+        "lines": [
+          "Caltrain",
+          "ACE Train",
+          "Capitol Corridor",
+          "Amtrak"
+        ],
+        "transitMinutes": 15,
+        "walkMinutes": 5
+      },
+      {
+        "name": "Milpitas Station",
+        "coords": {
+          "lat": 37.4103,
+          "lng": -121.8911
+        },
+        "lines": [
+          "VTA Light Rail",
+          "BART"
+        ],
+        "transitMinutes": 20,
+        "walkMinutes": 5
+      },
+      {
+        "name": "San Jose Diridon Station",
+        "coords": {
+          "lat": 37.3297,
+          "lng": -121.902
+        },
+        "lines": [
+          "Caltrain",
+          "VTA Light Rail",
+          "Amtrak",
+          "ACE Train",
+          "Capitol Corridor"
+        ],
+        "transitMinutes": 25,
+        "walkMinutes": 5
+      }
+    ]
+  }
+]

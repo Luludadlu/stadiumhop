@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StadiumHop — Search Results Mockup</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e4e4e7; }
+
+  /* Top Bar */
+  .topbar { background: #18181b; border-bottom: 1px solid #27272a; padding: 12px 20px; display: flex; align-items: center; gap: 16px; }
+  .topbar .logo { font-weight: 700; font-size: 18px; color: #22d3ee; }
+  .topbar .match-info { background: #27272a; border-radius: 8px; padding: 8px 14px; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+  .topbar .match-info .teams { font-weight: 600; color: #fff; }
+  .topbar .match-info .meta { color: #a1a1aa; }
+
+  /* Filters bar */
+  .filters-bar { padding: 10px 16px; border-bottom: 1px solid #27272a; display: flex; gap: 8px; }
+  .filters-bar select { background: #27272a; border: 1px solid #3f3f46; color: #e4e4e7; border-radius: 6px; padding: 6px 10px; font-size: 12px; flex: 1; }
+
+  /* Split Layout */
+  .split { display: flex; height: calc(100vh - 56px); }
+
+  /* Map Panel */
+  .map-panel { flex: 0 0 60%; position: relative; overflow: hidden; }
+  #map { width: 100%; height: 100%; }
+
+  /* Dark map tiles override */
+  .leaflet-tile-pane { filter: brightness(0.7) saturate(0.8) contrast(1.1); }
+  .leaflet-control-attribution { font-size: 9px !important; opacity: 0.5; }
+
+  /* Price pill markers */
+  .price-pill { background: #34d399; color: #052e16; font-size: 12px; font-weight: 800; padding: 3px 10px; border-radius: 12px; white-space: nowrap; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.4); border: 2px solid #fff3; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+  .price-pill:hover { transform: scale(1.15); box-shadow: 0 4px 12px rgba(52,211,153,0.4); z-index: 999 !important; }
+  .price-pill.active { background: #22d3ee; color: #042f2e; transform: scale(1.15); box-shadow: 0 4px 12px rgba(34,211,238,0.4); }
+
+  /* Venue marker */
+  .venue-marker { background: #ef4444; color: #fff; font-size: 13px; font-weight: 800; padding: 6px 14px; border-radius: 8px; white-space: nowrap; text-align: center; box-shadow: 0 0 20px rgba(239,68,68,0.5), 0 4px 8px rgba(0,0,0,0.3); border: 2px solid #fff; }
+
+  /* Station marker */
+  .station-marker { background: #18181b; color: #e4e4e7; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; border: 2px solid; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+
+  /* Hotel List */
+  .hotel-panel { flex: 0 0 40%; background: #18181b; border-left: 1px solid #27272a; overflow-y: auto; }
+  .hotel-header { padding: 16px 20px; border-bottom: 1px solid #27272a; display: flex; justify-content: space-between; align-items: center; }
+  .hotel-header h3 { font-size: 14px; font-weight: 600; }
+  .hotel-header .sort { font-size: 12px; color: #a1a1aa; }
+  .hotel-header .sort span { color: #22d3ee; cursor: pointer; }
+
+  /* Flight Module */
+  .flight-module { margin: 12px 16px; background: linear-gradient(135deg, #1e3a5f, #1a2744); border: 1px solid #2563eb33; border-radius: 10px; padding: 14px 16px; }
+  .flight-module .flight-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .flight-module .flight-label { font-size: 11px; color: #60a5fa; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .flight-module .flight-route { font-size: 14px; font-weight: 600; color: #fff; }
+  .flight-module .flight-route .arrow { color: #60a5fa; margin: 0 6px; }
+  .flight-module .flight-details { display: flex; justify-content: space-between; align-items: center; }
+  .flight-module .flight-dates { font-size: 12px; color: #94a3b8; }
+  .flight-module .flight-price { font-size: 18px; font-weight: 700; color: #34d399; }
+  .flight-module .flight-price span { font-size: 11px; color: #94a3b8; font-weight: 400; }
+  .flight-module .flight-cta { display: block; text-align: center; margin-top: 10px; background: #2563eb; color: #fff; border-radius: 6px; padding: 8px; font-size: 12px; font-weight: 600; text-decoration: none; }
+
+  /* Hotel Card */
+  .hotel-card { padding: 16px 20px; border-bottom: 1px solid #27272a; cursor: pointer; transition: background 0.15s; }
+  .hotel-card:hover { background: #1f1f23; }
+  .hotel-card.active { background: #1a2744; border-left: 3px solid #22d3ee; }
+  .hotel-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .hotel-name { font-size: 14px; font-weight: 600; color: #fff; }
+  .hotel-price { font-size: 16px; font-weight: 700; color: #34d399; }
+  .hotel-price span { font-size: 11px; color: #a1a1aa; font-weight: 400; }
+  .hotel-stars { color: #eab308; font-size: 11px; margin-top: 2px; }
+  .hotel-transit { margin-top: 8px; display: flex; align-items: center; gap: 6px; font-size: 12px; color: #a1a1aa; }
+  .hotel-transit .line-badge { padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .hotel-transit .time { font-weight: 600; color: #e4e4e7; }
+  .hotel-tags { margin-top: 6px; display: flex; gap: 6px; }
+  .hotel-tags .tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+  .tag.best-value { background: #34d39922; color: #34d399; }
+  .tag.closest { background: #f59e0b22; color: #f59e0b; }
+  .hotel-station { font-size: 11px; color: #71717a; margin-top: 4px; }
+  .hotel-cta { margin-top: 8px; }
+  .hotel-cta a { font-size: 12px; color: #22d3ee; text-decoration: none; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="logo">StadiumHop</div>
+  <div class="match-info">
+    <span class="teams">Mexico vs TBD</span>
+    <span class="meta">· Jun 11, 18:00 · MetLife Stadium</span>
+  </div>
+</div>
+
+<!-- Split View -->
+<div class="split">
+
+  <!-- Map Panel (Leaflet) -->
+  <div class="map-panel">
+    <div id="map"></div>
+  </div>
+
+  <!-- Hotel List Panel -->
+  <div class="hotel-panel">
+    <div class="filters-bar">
+      <select><option>Max 60 min transit</option><option>Max 45 min</option><option>Max 90 min</option></select>
+      <select><option>Any budget</option><option>Under $100</option><option>Under $150</option></select>
+      <select><option>Any rating</option><option>3+ stars</option><option>4+ stars</option></select>
+    </div>
+    <div class="hotel-header">
+      <h3>11 hotels found</h3>
+      <div class="sort">Sort: <span>Transit time</span> · Price · Rating</div>
+    </div>
+
+    <!-- Flight Module -->
+    <div class="flight-module">
+      <div class="flight-top">
+        <div class="flight-label">✈ Flights to this match</div>
+      </div>
+      <div class="flight-route">London <span class="arrow">→</span> New York</div>
+      <div class="flight-details">
+        <div class="flight-dates">Jun 10 – Jun 12 · Round trip</div>
+        <div class="flight-price">$342 <span>from</span></div>
+      </div>
+      <a href="#" class="flight-cta">View flights on Skyscanner →</a>
+    </div>
+
+    <!-- Hotel Cards -->
+    <div class="hotel-card active" data-hotel="newark-holiday-inn">
+      <div class="hotel-top">
+        <div>
+          <div class="hotel-name">Holiday Inn Newark Airport</div>
+          <div class="hotel-stars">★★★ · 4.1</div>
+        </div>
+        <div class="hotel-price">$45<span>/night</span></div>
+      </div>
+      <div class="hotel-transit">
+        <span class="time">28 min</span> total ·
+        <span class="line-badge" style="background:#22d3ee22;color:#22d3ee">NJ Transit</span>
+        <span>→ Newark Penn → Secaucus → Meadowlands</span>
+      </div>
+      <div class="hotel-station">📍 4 min walk to Newark Penn Station</div>
+      <div class="hotel-tags"><span class="tag best-value">Best value</span></div>
+      <div class="hotel-cta"><a href="#">Book on Skyscanner →</a></div>
+    </div>
+
+    <div class="hotel-card" data-hotel="newark-bestwestern">
+      <div class="hotel-top">
+        <div>
+          <div class="hotel-name">Best Western Newark</div>
+          <div class="hotel-stars">★★★ · 3.8</div>
+        </div>
+        <div class="hotel-price">$52<span>/night</span></div>
+      </div>
+      <div class="hotel-transit">
+        <span class="time">32 min</span> total ·
+        <span class="line-badge" style="background:#22d3ee22;color:#22d3ee">NJ Transit</span>
+        <span>→ Newark Penn → Secaucus → Meadowlands</span>
+      </div>
+      <div class="hotel-station">📍 7 min walk to Newark Penn Station</div>
+      <div class="hotel-tags"></div>
+      <div class="hotel-cta"><a href="#">Book on Skyscanner →</a></div>
+    </div>
+
+    <div class="hotel-card" data-hotel="secaucus-hilton">
+      <div class="hotel-top">
+        <div>
+          <div class="hotel-name">Hilton Garden Inn Secaucus</div>
+          <div class="hotel-stars">★★★★ · 4.3</div>
+        </div>
+        <div class="hotel-price">$72<span>/night</span></div>
+      </div>
+      <div class="hotel-transit">
+        <span class="time">15 min</span> total ·
+        <span class="line-badge" style="background:#f9731622;color:#f97316">Meadowlands Rail</span>
+        <span>→ Secaucus → Meadowlands</span>
+      </div>
+      <div class="hotel-station">📍 3 min walk to Secaucus Junction</div>
+      <div class="hotel-tags"><span class="tag closest">Closest</span></div>
+      <div class="hotel-cta"><a href="#">Book on Skyscanner →</a></div>
+    </div>
+
+    <div class="hotel-card" data-hotel="secaucus-courtyard">
+      <div class="hotel-top">
+        <div>
+          <div class="hotel-name">Courtyard Secaucus</div>
+          <div class="hotel-stars">★★★★ · 4.2</div>
+        </div>
+        <div class="hotel-price">$89<span>/night</span></div>
+      </div>
+      <div class="hotel-transit">
+        <span class="time">18 min</span> total ·
+        <span class="line-badge" style="background:#f9731622;color:#f97316">Meadowlands Rail</span>
+        <span>→ Secaucus → Meadowlands</span>
+      </div>
+      <div class="hotel-station">📍 5 min walk to Secaucus Junction</div>
+      <div class="hotel-tags"></div>
+      <div class="hotel-cta"><a href="#">Book on Skyscanner →</a></div>
+    </div>
+
+    <div class="hotel-card" data-hotel="secaucus-embassy">
+      <div class="hotel-top">
+        <div>
+          <div class="hotel-name">Embassy Suites Secaucus</div>
+          <div class="hotel-stars">★★★★ · 4.4</div>
+        </div>
+        <div class="hotel-price">$95<span>/night</span></div>
+      </div>
+      <div class="hotel-transit">
+        <span class="time">20 min</span> total ·
+        <span class="line-badge" style="background:#f9731622;color:#f97316">Meadowlands Rail</span>
+        <span>→ Secaucus → Meadowlands</span>
+      </div>
+      <div class="hotel-station">📍 6 min walk to Secaucus Junction</div>
+      <div class="hotel-tags"></div>
+      <div class="hotel-cta"><a href="#">Book on Skyscanner →</a></div>
+    </div>
+
+    <div class="hotel-card" data-hotel="hoboken-hyatt">
+      <div class="hotel-top">
+        <div>
+          <div class="hotel-name">Hyatt House Hoboken</div>
+          <div class="hotel-stars">★★★★ · 4.5</div>
+        </div>
+        <div class="hotel-price">$135<span>/night</span></div>
+      </div>
+      <div class="hotel-transit">
+        <span class="time">25 min</span> total ·
+        <span class="line-badge" style="background:#a855f722;color:#a855f7">PATH</span>
+        <span>→ Hoboken → Secaucus → Meadowlands</span>
+      </div>
+      <div class="hotel-station">📍 6 min walk to Hoboken Station</div>
+      <div class="hotel-tags"></div>
+      <div class="hotel-cta"><a href="#">Book on Skyscanner →</a></div>
+    </div>
+
+    <div class="hotel-card" data-hotel="hoboken-w">
+      <div class="hotel-top">
+        <div>
+          <div class="hotel-name">W Hoboken</div>
+          <div class="hotel-stars">★★★★★ · 4.6</div>
+        </div>
+        <div class="hotel-price">$110<span>/night</span></div>
+      </div>
+      <div class="hotel-transit">
+        <span class="time">28 min</span> total ·
+        <span class="line-badge" style="background:#a855f722;color:#a855f7">PATH</span>
+        <span>→ Hoboken → Secaucus → Meadowlands</span>
+      </div>
+      <div class="hotel-station">📍 8 min walk to Hoboken Station</div>
+      <div class="hotel-tags"></div>
+      <div class="hotel-cta"><a href="#">Book on Skyscanner →</a></div>
+    </div>
+
+    <div class="hotel-card" data-hotel="journal-sq-hampton">
+      <div class="hotel-top">
+        <div>
+          <div class="hotel-name">Hampton Inn Journal Square</div>
+          <div class="hotel-stars">★★★ · 4.0</div>
+        </div>
+        <div class="hotel-price">$78<span>/night</span></div>
+      </div>
+      <div class="hotel-transit">
+        <span class="time">38 min</span> total ·
+        <span class="line-badge" style="background:#a855f722;color:#a855f7">PATH</span>
+        <span>→ Journal Sq → Hoboken → Secaucus → Meadowlands</span>
+      </div>
+      <div class="hotel-station">📍 2 min walk to Journal Square Station</div>
+      <div class="hotel-tags"></div>
+      <div class="hotel-cta"><a href="#">Book on Skyscanner →</a></div>
+    </div>
+
+    <div class="hotel-card" data-hotel="nyc-standard">
+      <div class="hotel-top">
+        <div>
+          <div class="hotel-name">The Standard NYC</div>
+          <div class="hotel-stars">★★★★★ · 4.7</div>
+        </div>
+        <div class="hotel-price">$210<span>/night</span></div>
+      </div>
+      <div class="hotel-transit">
+        <span class="time">45 min</span> total ·
+        <span class="line-badge" style="background:#a855f722;color:#a855f7">PATH</span>
+        <span>→ Penn NYC → Secaucus → Meadowlands</span>
+      </div>
+      <div class="hotel-station">📍 8 min walk to Penn Station NYC</div>
+      <div class="hotel-tags"></div>
+      <div class="hotel-cta"><a href="#">Book on Skyscanner →</a></div>
+    </div>
+
+    <div class="hotel-card" data-hotel="nyc-hilton-midtown">
+      <div class="hotel-top">
+        <div>
+          <div class="hotel-name">Hilton Midtown Manhattan</div>
+          <div class="hotel-stars">★★★★ · 4.3</div>
+        </div>
+        <div class="hotel-price">$185<span>/night</span></div>
+      </div>
+      <div class="hotel-transit">
+        <span class="time">42 min</span> total ·
+        <span class="line-badge" style="background:#a855f722;color:#a855f7">PATH</span>
+        <span>→ Penn NYC → Secaucus → Meadowlands</span>
+      </div>
+      <div class="hotel-station">📍 12 min walk to Penn Station NYC</div>
+      <div class="hotel-tags"></div>
+      <div class="hotel-cta"><a href="#">Book on Skyscanner →</a></div>
+    </div>
+
+    <div class="hotel-card" data-hotel="newark-courtyard">
+      <div class="hotel-top">
+        <div>
+          <div class="hotel-name">Courtyard Newark Downtown</div>
+          <div class="hotel-stars">★★★ · 3.9</div>
+        </div>
+        <div class="hotel-price">$58<span>/night</span></div>
+      </div>
+      <div class="hotel-transit">
+        <span class="time">30 min</span> total ·
+        <span class="line-badge" style="background:#22d3ee22;color:#22d3ee">NJ Transit</span>
+        <span>→ Newark Penn → Secaucus → Meadowlands</span>
+      </div>
+      <div class="hotel-station">📍 5 min walk to Newark Penn Station</div>
+      <div class="hotel-tags"></div>
+      <div class="hotel-cta"><a href="#">Book on Skyscanner →</a></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ===== MAP SETUP =====
+const map = L.map('map', {
+  zoomControl: false,
+  attributionControl: true
+}).setView([40.79, -74.08], 12);
+
+// Dark-ish map tiles (CartoDB dark matter)
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OSM &copy; CARTO',
+  maxZoom: 18
+}).addTo(map);
+
+// Zoom control top-right
+L.control.zoom({ position: 'topright' }).addTo(map);
+
+// ===== DATA =====
+const venue = { name: 'MetLife Stadium', lat: 40.8128, lng: -74.0742 };
+
+const stations = [
+  { name: 'Meadowlands', lat: 40.8103, lng: -74.0693, color: '#f97316', lines: 'Meadowlands Rail', time: '5 min walk' },
+  { name: 'Secaucus Jct', lat: 40.7618, lng: -74.0756, color: '#22d3ee', lines: 'NJ Transit, PATH', time: '12 min' },
+  { name: 'Newark Penn', lat: 40.7345, lng: -74.1644, color: '#22d3ee', lines: 'NJ Transit, PATH', time: '28 min' },
+  { name: 'Hoboken', lat: 40.7352, lng: -74.0276, color: '#a855f7', lines: 'PATH, NJ Transit', time: '22 min' },
+  { name: 'Journal Sq', lat: 40.7332, lng: -74.0634, color: '#a855f7', lines: 'PATH', time: '35 min' },
+  { name: 'Penn Station NYC', lat: 40.7506, lng: -73.9935, color: '#a855f7', lines: 'PATH, NJ Transit', time: '40 min' }
+];
+
+const hotels = [
+  { id: 'newark-holiday-inn', name: 'Holiday Inn Newark', price: '$45', lat: 40.7310, lng: -74.1710 },
+  { id: 'newark-bestwestern', name: 'Best Western Newark', price: '$52', lat: 40.7380, lng: -74.1580 },
+  { id: 'newark-courtyard', name: 'Courtyard Newark', price: '$58', lat: 40.7400, lng: -74.1700 },
+  { id: 'secaucus-hilton', name: 'Hilton Secaucus', price: '$72', lat: 40.7720, lng: -74.0650 },
+  { id: 'secaucus-courtyard', name: 'Courtyard Secaucus', price: '$89', lat: 40.7660, lng: -74.0820 },
+  { id: 'secaucus-embassy', name: 'Embassy Suites', price: '$95', lat: 40.7580, lng: -74.0710 },
+  { id: 'journal-sq-hampton', name: 'Hampton Inn JC', price: '$78', lat: 40.7290, lng: -74.0620 },
+  { id: 'hoboken-w', name: 'W Hoboken', price: '$110', lat: 40.7410, lng: -74.0240 },
+  { id: 'hoboken-hyatt', name: 'Hyatt House Hoboken', price: '$135', lat: 40.7385, lng: -74.0310 },
+  { id: 'nyc-hilton-midtown', name: 'Hilton Midtown', price: '$185', lat: 40.7620, lng: -73.9790 },
+  { id: 'nyc-standard', name: 'The Standard NYC', price: '$210', lat: 40.7410, lng: -74.0080 }
+];
+
+// Transit line routes (approximate coordinates along rail corridors)
+const transitLines = [
+  { name: 'NJ Transit', color: '#22d3ee', coords: [
+    [40.7345, -74.1644], // Newark Penn
+    [40.7618, -74.0756], // Secaucus Jct
+    [40.8103, -74.0693], // Meadowlands
+    [40.8128, -74.0742]  // MetLife
+  ]},
+  { name: 'PATH', color: '#a855f7', coords: [
+    [40.7506, -73.9935], // Penn NYC
+    [40.7332, -74.0634], // Journal Sq
+    [40.7352, -74.0276], // Hoboken
+    [40.7618, -74.0756]  // Secaucus Jct
+  ]},
+  { name: 'Meadowlands Rail', color: '#f97316', coords: [
+    [40.7618, -74.0756], // Secaucus Jct
+    [40.8103, -74.0693], // Meadowlands
+    [40.8128, -74.0742]  // MetLife
+  ]}
+];
+
+// ===== DRAW TRANSIT LINES =====
+transitLines.forEach(line => {
+  L.polyline(line.coords, {
+    color: line.color,
+    weight: 5,
+    opacity: 0.6,
+    dashArray: line.name === 'Meadowlands Rail' ? '8 6' : null
+  }).addTo(map);
+});
+
+// ===== VENUE MARKER =====
+const venueIcon = L.divIcon({
+  className: '',
+  html: '<div class="venue-marker">⚽ MetLife Stadium</div>',
+  iconSize: [160, 34],
+  iconAnchor: [80, 17]
+});
+L.marker([venue.lat, venue.lng], { icon: venueIcon, zIndexOffset: 1000 }).addTo(map);
+
+// ===== STATION MARKERS =====
+stations.forEach(s => {
+  const icon = L.divIcon({
+    className: '',
+    html: `<div class="station-marker" style="border-color:${s.color}">${s.name}</div>`,
+    iconSize: [90, 24],
+    iconAnchor: [45, 12]
+  });
+  const marker = L.marker([s.lat, s.lng], { icon, zIndexOffset: 500 }).addTo(map);
+  marker.bindTooltip(`<b>${s.name}</b><br>${s.lines}<br>${s.time} to venue`, {
+    className: 'station-tooltip'
+  });
+});
+
+// ===== HOTEL PRICE PILLS =====
+const hotelMarkers = {};
+hotels.forEach(h => {
+  const icon = L.divIcon({
+    className: '',
+    html: `<div class="price-pill" data-hotel="${h.id}">${h.price}</div>`,
+    iconSize: [50, 26],
+    iconAnchor: [25, 13]
+  });
+  const marker = L.marker([h.lat, h.lng], { icon, zIndexOffset: 200 }).addTo(map);
+  marker.bindTooltip(`<b>${h.name}</b><br>${h.price}/night`, { offset: [0, -14] });
+  hotelMarkers[h.id] = marker;
+
+  // Click pill → highlight card
+  marker.on('click', () => highlightHotel(h.id));
+});
+
+// ===== INTERACTIVITY: card ↔ map =====
+function highlightHotel(id) {
+  // Cards
+  document.querySelectorAll('.hotel-card').forEach(c => c.classList.remove('active'));
+  const card = document.querySelector(`.hotel-card[data-hotel="${id}"]`);
+  if (card) {
+    card.classList.add('active');
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  // Pills
+  document.querySelectorAll('.price-pill').forEach(p => p.classList.remove('active'));
+  const pill = document.querySelector(`.price-pill[data-hotel="${id}"]`);
+  if (pill) pill.classList.add('active');
+  // Pan map
+  const hotel = hotels.find(h => h.id === id);
+  if (hotel) map.panTo([hotel.lat, hotel.lng], { animate: true, duration: 0.3 });
+}
+
+// Card click → highlight on map
+document.querySelectorAll('.hotel-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const id = card.dataset.hotel;
+    if (id) highlightHotel(id);
+  });
+});
+
+// Fit map to show everything
+const allPoints = [
+  [venue.lat, venue.lng],
+  ...hotels.map(h => [h.lat, h.lng]),
+  ...stations.map(s => [s.lat, s.lng])
+];
+map.fitBounds(L.latLngBounds(allPoints).pad(0.08));
+</script>
+</body>
+</html>
