@@ -430,6 +430,57 @@ function MapInner({
   );
 }
 
+// ─── Map legend ─────────────────────────────────────────────
+function MapLegend({ venues }: { venues: Venue[] }) {
+  const lines = useMemo(() => {
+    const seen = new Map<string, string>();
+    for (const v of venues) {
+      const detailed = transitRoutesByVenue[v.id];
+      const transitLines = detailed && detailed.length > 0 ? detailed : buildFallbackLines(v);
+      for (const line of transitLines) {
+        if (!seen.has(line.name)) seen.set(line.name, line.color);
+      }
+    }
+    return [...seen.entries()];
+  }, [venues]);
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        bottom: 16,
+        left: 16,
+        background: "rgba(255,255,255,0.95)",
+        border: "1px solid #e5e7eb",
+        borderRadius: 10,
+        padding: "10px 14px",
+        fontSize: 12,
+        zIndex: 10,
+        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        maxWidth: 220,
+      }}
+    >
+      <div style={{ fontWeight: 700, fontSize: 11, color: "#6b7280", marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>
+        Transit Lines
+      </div>
+      {lines.map(([name, color]) => (
+        <div key={name} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
+          <div style={{ width: 20, height: 4, borderRadius: 2, background: color, flexShrink: 0 }} />
+          <span style={{ color: "#374151", lineHeight: 1.3 }}>{name}</span>
+        </div>
+      ))}
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6, paddingTop: 6, borderTop: "1px solid #e5e7eb" }}>
+        <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#dc2626", flexShrink: 0 }} />
+        <span style={{ color: "#374151" }}>Venue</span>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 3 }}>
+        <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#059669", flexShrink: 0 }} />
+        <span style={{ color: "#374151" }}>Hotel (price)</span>
+      </div>
+    </div>
+  );
+}
+
 // ─── Main export ─────────────────────────────────────────────
 export function MapView(props: MapViewProps) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
@@ -443,17 +494,20 @@ export function MapView(props: MapViewProps) {
   }
 
   return (
-    <APIProvider apiKey={apiKey}>
-      <GoogleMap
-        defaultCenter={{ lat: 40.78, lng: -74.07 }}
-        defaultZoom={11}
-        gestureHandling="greedy"
-        disableDefaultUI={false}
-        mapId="stadiumhop-map"
-        style={{ width: "100%", height: "100%" }}
-      >
-        <MapInner {...props} />
-      </GoogleMap>
-    </APIProvider>
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      <APIProvider apiKey={apiKey}>
+        <GoogleMap
+          defaultCenter={{ lat: 40.78, lng: -74.07 }}
+          defaultZoom={11}
+          gestureHandling="greedy"
+          disableDefaultUI={false}
+          mapId="stadiumhop-map"
+          style={{ width: "100%", height: "100%" }}
+        >
+          <MapInner {...props} />
+        </GoogleMap>
+      </APIProvider>
+      <MapLegend venues={props.venues} />
+    </div>
   );
 }

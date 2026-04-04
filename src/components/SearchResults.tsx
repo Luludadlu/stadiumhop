@@ -117,14 +117,15 @@ export function SearchResults({
         {/* Hotel panel */}
         <div className="w-[40%] flex flex-col bg-[#F0EBE3]">
           {/* Match info + filters header */}
-          <div className="shrink-0 border-b border-[#DDD6CB]">
-            <div className="px-4 py-2.5 flex flex-wrap items-center gap-2 justify-end">
+          <div className="shrink-0 border-b border-[#DDD6CB] px-4 py-2.5 space-y-2">
+            {/* Row 1: match info + dates — single line */}
+            <div className="flex items-center gap-2 flex-wrap">
               {matches.map((match) => {
                 const venue = venues.find((v) => v.id === match.venueId);
                 return (
                   <div
                     key={match.id}
-                    className="shrink-0 flex items-center gap-2 rounded-lg border border-[#DDD6CB] bg-white px-3 py-2 text-sm"
+                    className="flex items-center gap-2 rounded-lg border border-[#DDD6CB] bg-white px-3 py-1.5 text-sm"
                   >
                     <span className="font-semibold text-zinc-800">
                       {match.teams[0]} vs {match.teams[1]}
@@ -137,23 +138,22 @@ export function SearchResults({
                 );
               })}
               {checkin && checkout && (
-                <div className="shrink-0 rounded-lg border border-[#DDD6CB] bg-white px-3 py-2 text-sm text-zinc-500">
+                <div className="rounded-lg border border-[#DDD6CB] bg-white px-3 py-1.5 text-sm text-zinc-500">
                   {checkin} → {checkout}
                 </div>
               )}
             </div>
-            <div className="px-4 pb-2">
-              <SearchFilters
-                maxTransit={maxTransit}
-                maxPrice={maxPrice}
-                minRating={minRating}
-                sortBy={sortBy}
-                onMaxTransitChange={setMaxTransit}
-                onMaxPriceChange={setMaxPrice}
-                onMinRatingChange={setMinRating}
-                onSortByChange={setSortBy}
-              />
-            </div>
+            {/* Row 2: filters + sort — single line */}
+            <SearchFilters
+              maxTransit={maxTransit}
+              maxPrice={maxPrice}
+              minRating={minRating}
+              sortBy={sortBy}
+              onMaxTransitChange={setMaxTransit}
+              onMaxPriceChange={setMaxPrice}
+              onMinRatingChange={setMinRating}
+              onSortByChange={setSortBy}
+            />
           </div>
 
           {/* Count + station filter */}
