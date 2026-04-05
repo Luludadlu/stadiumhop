@@ -157,71 +157,74 @@ function VenueMarker({ venue }: { venue: Venue }) {
   );
 }
 
-// ─── Station marker: multi-color bar + name ─────────────────
+// ─── Station marker: dot only, name on hover/click ──────────
 function StationMarker({
   station,
   colors,
   isSelected,
+  isHovered,
   onClick,
+  onMouseEnter,
+  onMouseLeave,
 }: {
   station: RouteStation;
   colors: string[];
   isSelected: boolean;
+  isHovered: boolean;
   onClick: () => void;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }) {
   const unique = [...new Set(colors)];
-  const segmentW = 14;
+  const showLabel = isSelected || isHovered;
+  const primaryColor = unique[0] || "#0077C0";
   return (
     <div
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       style={{
         display: "flex",
         alignItems: "center",
         gap: 4,
         cursor: "pointer",
-        transform: isSelected ? "scale(1.15)" : "scale(1)",
-        transition: "transform 0.15s ease",
       }}
     >
-      {/* Color-segmented rectangle */}
+      {/* Dot */}
       <div
         style={{
-          display: "flex",
-          width: unique.length * segmentW,
-          height: 14,
-          borderRadius: 3,
-          overflow: "hidden",
-          boxShadow: isSelected
-            ? "0 0 8px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.4)"
-            : "0 1px 4px rgba(0,0,0,0.4)",
-          border: isSelected
-            ? "2px solid #fff"
-            : "2px solid rgba(255,255,255,0.8)",
+          width: showLabel ? 12 : 10,
+          height: showLabel ? 12 : 10,
+          borderRadius: "50%",
+          background: unique.length === 1 ? primaryColor : `conic-gradient(${unique.map((c, i) => `${c} ${(i / unique.length) * 360}deg ${((i + 1) / unique.length) * 360}deg`).join(", ")})`,
+          border: "2px solid #fff",
+          boxShadow: showLabel
+            ? "0 0 8px rgba(0,0,0,0.3)"
+            : "0 1px 3px rgba(0,0,0,0.3)",
+          transition: "all 0.15s ease",
           flexShrink: 0,
         }}
-      >
-        {unique.map((c, i) => (
-          <div key={i} style={{ flex: 1, background: c }} />
-        ))}
-      </div>
-      {/* Station name label */}
-      <span
-        style={{
-          fontSize: 11,
-          fontWeight: 700,
-          color: isSelected ? "#fff" : "#1f2937",
-          whiteSpace: "nowrap",
-          background: isSelected
-            ? "rgba(8,145,178,0.9)"
-            : "rgba(255,255,255,0.92)",
-          padding: "2px 6px",
-          borderRadius: 4,
-          boxShadow: "0 1px 3px rgba(0,0,0,0.15)",
-          lineHeight: 1.3,
-        }}
-      >
-        {station.name}
-      </span>
+      />
+      {/* Name label — only on hover/click */}
+      {showLabel && (
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            color: isSelected ? "#fff" : "#1f2937",
+            whiteSpace: "nowrap",
+            background: isSelected
+              ? "rgba(8,145,178,0.9)"
+              : "rgba(255,255,255,0.95)",
+            padding: "2px 8px",
+            borderRadius: 4,
+            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+            lineHeight: 1.3,
+          }}
+        >
+          {station.name}
+        </span>
+      )}
     </div>
   );
 }
@@ -354,10 +357,9 @@ function MapInner({
     return [...seen.values()] as { station: RouteStation; colors: string[] }[];
   }, [transitLines, venues]);
 
-  // Track selected station
-  const [selectedStation, setSelectedStation] = React.useState<string | null>(
-    null,
-  );
+  // Track selected + hovered station
+  const [selectedStation, setSelectedStation] = React.useState<string | null>(null);
+  const [hoveredStation, setHoveredStation] = React.useState<string | null>(null);
 
   const handleStationClick = useCallback(
     (stationName: string) => {
@@ -384,18 +386,21 @@ function MapInner({
         );
       })}
 
-      {/* Station markers with multi-color rectangles */}
+      {/* Station markers — dots, name on hover/click */}
       {uniqueStations.map(({ station, colors }) => (
         <AdvancedMarker
           key={`station-${station.name}`}
           position={{ lat: station.lat, lng: station.lng }}
-          zIndex={selectedStation === station.name ? 500 : 400}
+          zIndex={selectedStation === station.name || hoveredStation === station.name ? 500 : 400}
         >
           <StationMarker
             station={station}
             colors={colors}
             isSelected={selectedStation === station.name}
+            isHovered={hoveredStation === station.name}
             onClick={() => handleStationClick(station.name)}
+            onMouseEnter={() => setHoveredStation(station.name)}
+            onMouseLeave={() => setHoveredStation(null)}
           />
         </AdvancedMarker>
       ))}
@@ -464,12 +469,12 @@ function MapLegend({ venues }: { venues: Venue[] }) {
         Transit Lines
       </div>
       {lines.map(([name, color]) => (
-        <div key={name} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
+        <div key={name} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
           <div style={{ width: 20, height: 4, borderRadius: 2, background: color, flexShrink: 0 }} />
           <span style={{ color: "#374151", lineHeight: 1.3 }}>{name}</span>
         </div>
       ))}
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6, paddingTop: 6, borderTop: "1px solid #e5e7eb" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8, paddingTop: 8, borderTop: "1px solid #e5e7eb" }}>
         <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#dc2626", flexShrink: 0 }} />
         <span style={{ color: "#374151" }}>Venue</span>
       </div>
