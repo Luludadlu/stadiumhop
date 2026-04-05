@@ -35,10 +35,6 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <Script
-          src="https://emrldco.com/NTE1MTM2.js?t=515136"
-          strategy="afterInteractive"
-        />
-        <Script
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6966038067085167"
           crossOrigin="anonymous"
           strategy="afterInteractive"
