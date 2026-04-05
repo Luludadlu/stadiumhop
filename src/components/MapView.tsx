@@ -94,43 +94,67 @@ interface MapViewProps {
   onStationSelect?: (stationName: string | null) => void;
 }
 
-// ─── Price pill on map ───────────────────────────────────────
-function PricePill({
+// ─── Hotel marker on map ─────────────────────────────────────
+// Shows as a small dot by default, price pill when station is selected or hotel is hovered/selected
+function HotelMarkerDot({
   hotel,
   isHovered,
   isSelected,
+  showPrice,
   onClick,
 }: {
   hotel: Hotel;
   isHovered: boolean;
   isSelected: boolean;
+  showPrice: boolean;
   onClick: () => void;
 }) {
   const highlight = isHovered || isSelected;
+
+  // Show price pill when station is selected or hotel is highlighted
+  if (showPrice || highlight) {
+    return (
+      <div
+        onClick={onClick}
+        style={{
+          background: highlight ? "#0891b2" : "#059669",
+          color: "#fff",
+          fontSize: 12,
+          fontWeight: 700,
+          padding: "4px 10px",
+          borderRadius: 12,
+          whiteSpace: "nowrap",
+          boxShadow: highlight
+            ? "0 4px 12px rgba(8,145,178,0.5)"
+            : "0 2px 6px rgba(0,0,0,0.25)",
+          border: highlight
+            ? "2px solid #fff"
+            : "2px solid rgba(255,255,255,0.6)",
+          cursor: "pointer",
+          transform: highlight ? "scale(1.15)" : "scale(1)",
+          transition: "all 0.15s ease",
+        }}
+      >
+        ${hotel.price}
+      </div>
+    );
+  }
+
+  // Default: small dot
   return (
     <div
       onClick={onClick}
       style={{
-        background: highlight ? "#0891b2" : "#059669",
-        color: "#fff",
-        fontSize: 12,
-        fontWeight: 700,
-        padding: "4px 10px",
-        borderRadius: 12,
-        whiteSpace: "nowrap",
-        boxShadow: highlight
-          ? "0 4px 12px rgba(8,145,178,0.5)"
-          : "0 2px 6px rgba(0,0,0,0.25)",
-        border: highlight
-          ? "2px solid #fff"
-          : "2px solid rgba(255,255,255,0.6)",
+        width: 8,
+        height: 8,
+        borderRadius: "50%",
+        background: "#059669",
+        border: "1.5px solid #fff",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.3)",
         cursor: "pointer",
-        transform: highlight ? "scale(1.2)" : "scale(1)",
         transition: "all 0.15s ease",
       }}
-    >
-      ${hotel.price}
-    </div>
+    />
   );
 }
 
@@ -193,8 +217,8 @@ function StationMarker({
       {/* Dot */}
       <div
         style={{
-          width: showLabel ? 12 : 10,
-          height: showLabel ? 12 : 10,
+          width: showLabel ? 16 : 14,
+          height: showLabel ? 16 : 14,
           borderRadius: "50%",
           background: unique.length === 1 ? primaryColor : `conic-gradient(${unique.map((c, i) => `${c} ${(i / unique.length) * 360}deg ${((i + 1) / unique.length) * 360}deg`).join(", ")})`,
           border: "2px solid #fff",
@@ -416,21 +440,25 @@ function MapInner({
         </AdvancedMarker>
       ))}
 
-      {/* Hotel price pills */}
-      {hotels.map((h) => (
-        <AdvancedMarker
-          key={h.id}
-          position={{ lat: h.coords.lat, lng: h.coords.lng }}
-          zIndex={hoveredHotel === h.id || selectedHotel === h.id ? 999 : 200}
-        >
-          <PricePill
-            hotel={h}
-            isHovered={hoveredHotel === h.id}
-            isSelected={selectedHotel === h.id}
-            onClick={() => onHotelSelect(h.id)}
-          />
-        </AdvancedMarker>
-      ))}
+      {/* Hotel markers — dots by default, price pills when station selected */}
+      {hotels.map((h) => {
+        const showPrice = !!selectedStation && h.nearestStation.name === selectedStation;
+        return (
+          <AdvancedMarker
+            key={h.id}
+            position={{ lat: h.coords.lat, lng: h.coords.lng }}
+            zIndex={hoveredHotel === h.id || selectedHotel === h.id ? 999 : showPrice ? 300 : 200}
+          >
+            <HotelMarkerDot
+              hotel={h}
+              isHovered={hoveredHotel === h.id}
+              isSelected={selectedHotel === h.id}
+              showPrice={showPrice}
+              onClick={() => onHotelSelect(h.id)}
+            />
+          </AdvancedMarker>
+        );
+      })}
     </>
   );
 }
