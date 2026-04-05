@@ -1,5 +1,6 @@
 import type { Hotel } from "@/types";
 import type { Venue } from "@/types";
+import { buildAffiliateBookingUrl } from "./travelpayouts";
 
 // Hotel name templates by city character
 const HOTEL_CHAINS = [
@@ -166,7 +167,7 @@ export function generateMockHotels(
           rating: roundedRating,
           stars,
           imageUrl: `https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80&fit=crop`,
-          bookingUrl: `https://www.skyscanner.net/hotels?checkin=2026-06-14&checkout=2026-06-16&query=${encodeURIComponent(hotelName)}`,
+          bookingUrl: buildAffiliateBookingUrl(venue.city, "2026-06-14", "2026-06-16", hotelName),
           nearestStation: {
             name: station.name,
             walkMinutes: walkToStation,

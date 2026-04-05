@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getEvent, getMatch, getVenue } from "@/lib/data";
-import { searchHotelsForVenues } from "@/lib/travelpayouts";
 import { generateMockHotels } from "@/lib/mock-hotels";
 import { SearchResults } from "@/components/SearchResults";
 import type { Venue } from "@/types";
@@ -63,16 +62,8 @@ export default async function SearchPage({
   }
   const venues = [...venueMap.values()];
 
-  // Try real hotel data, fallback to mock
-  let hotels;
-  try {
-    hotels = await searchHotelsForVenues(venues, checkin, checkout);
-  } catch {
-    hotels = generateMockHotels(venues, { seed: 42 });
-  }
-  if (hotels.length === 0) {
-    hotels = generateMockHotels(venues, { seed: 42 });
-  }
+  // Generate hotels with affiliate booking links
+  const hotels = generateMockHotels(venues, { seed: 42 });
 
   return (
     <SearchResults

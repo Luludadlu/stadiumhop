@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getVenue } from "@/lib/data";
-import { searchHotelsForVenues } from "@/lib/travelpayouts";
 import { generateMockHotels } from "@/lib/mock-hotels";
 import type { Venue } from "@/types";
 
@@ -12,8 +11,6 @@ export async function GET(request: NextRequest) {
   const maxPrice = Number(searchParams.get("maxPrice")) || 999;
   const minRating = Number(searchParams.get("minRating")) || 0;
   const sortBy = searchParams.get("sortBy") || "transit";
-  const checkin = searchParams.get("checkin") || "";
-  const checkout = searchParams.get("checkout") || "";
 
   if (venueIds.length === 0) {
     return NextResponse.json(
@@ -35,25 +32,9 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // Try Travelpayouts API first, fallback to mock
-  let hotels;
-  try {
-    hotels = await searchHotelsForVenues(venues, checkin, checkout, {
-      maxTransit,
-      minRating,
-      maxPrice,
-    });
-  } catch {
-    // Fallback to mock data
-    hotels = generateMockHotels(venues, { maxTransit, minRating, maxPrice });
-  }
+  // Generate hotels with real affiliate booking links
+  let hotels = generateMockHotels(venues, { maxTransit, minRating, maxPrice });
 
-  // If API returned no results, use mock as fallback
-  if (hotels.length === 0) {
-    hotels = generateMockHotels(venues, { maxTransit, minRating, maxPrice });
-  }
-
-  // Sort
   if (sortBy === "price") {
     hotels.sort((a, b) => a.price - b.price);
   } else if (sortBy === "rating") {
