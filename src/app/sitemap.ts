@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { getEvents, getVenuesByEvent, getCitiesByEvent } from "@/lib/data";
 import { slugify } from "@/lib/slugify";
 
-const SITE_URL = "https://stadiumhop.vercel.app";
+const SITE_URL = "https://stadiumhop.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [

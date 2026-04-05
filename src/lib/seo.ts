@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { Event, Venue, Match } from "@/types";
 
-const SITE_URL = "https://stadiumhop.vercel.app";
+const SITE_URL = "https://stadiumhop.com";
 const SITE_NAME = "StadiumHop";
 
 export function homeMetadata(): Metadata {
