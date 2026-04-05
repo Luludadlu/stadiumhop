@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Oswald } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { Header } from "@/components/Header";
 
@@ -32,6 +33,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          src="https://emrldco.com/NTE1MTM2.js?t=515136"
+          strategy="afterInteractive"
+        />
+        {process.env.NEXT_PUBLIC_ADSENSE_ID && (
+          <Script
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_ID}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${oswald.variable} font-sans antialiased bg-white text-zinc-900 min-h-screen`}
       >

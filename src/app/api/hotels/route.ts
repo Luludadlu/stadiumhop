@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getVenue } from "@/lib/data";
+import { searchHotelsForVenues } from "@/lib/travelpayouts";
 import { generateMockHotels } from "@/lib/mock-hotels";
 import type { Venue } from "@/types";
 
@@ -11,7 +12,8 @@ export async function GET(request: NextRequest) {
   const maxPrice = Number(searchParams.get("maxPrice")) || 999;
   const minRating = Number(searchParams.get("minRating")) || 0;
   const sortBy = searchParams.get("sortBy") || "transit";
-  const seed = Number(searchParams.get("seed")) || 42;
+  const checkin = searchParams.get("checkin") || "";
+  const checkout = searchParams.get("checkout") || "";
 
   if (venueIds.length === 0) {
     return NextResponse.json(
@@ -33,7 +35,23 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  let hotels = generateMockHotels(venues, { maxTransit, minRating, maxPrice, seed });
+  // Try Travelpayouts API first, fallback to mock
+  let hotels;
+  try {
+    hotels = await searchHotelsForVenues(venues, checkin, checkout, {
+      maxTransit,
+      minRating,
+      maxPrice,
+    });
+  } catch {
+    // Fallback to mock data
+    hotels = generateMockHotels(venues, { maxTransit, minRating, maxPrice });
+  }
+
+  // If API returned no results, use mock as fallback
+  if (hotels.length === 0) {
+    hotels = generateMockHotels(venues, { maxTransit, minRating, maxPrice });
+  }
 
   // Sort
   if (sortBy === "price") {
@@ -41,7 +59,6 @@ export async function GET(request: NextRequest) {
   } else if (sortBy === "rating") {
     hotels.sort((a, b) => b.rating - a.rating);
   }
-  // default is already sorted by transit time
 
   return NextResponse.json({
     hotels,

@@ -1,4 +1,5 @@
 import type { Event, Venue, Match } from "@/types";
+import { slugify } from "./slugify";
 
 import eventsData from "@/data/events.json";
 import venuesData from "@/data/venues.json";
@@ -73,4 +74,34 @@ export function getTeamsByEvent(eventId: string): string[] {
     }
   }
   return [...teams].sort();
+}
+
+// ============================================================
+// Slug-based lookups (for SEO pages)
+// ============================================================
+
+export function getVenueBySlug(slug: string): Venue | undefined {
+  return (venuesData as Venue[]).find((v) => slugify(v.id) === slug || v.id === slug);
+}
+
+export function getCityBySlug(eventId: string, citySlug: string): string | undefined {
+  const cities = getCitiesByEvent(eventId);
+  return cities.find((c) => slugify(c) === citySlug);
+}
+
+export function getVenuesByCity(eventId: string, city: string): Venue[] {
+  const venues = getVenuesByEvent(eventId);
+  return venues.filter((v) => v.city === city);
+}
+
+export function getMatchesByVenue(eventId: string, venueId: string): Match[] {
+  return getMatches(eventId).filter((m) => m.venueId === venueId);
+}
+
+export function getAllCitySlugs(eventId: string): string[] {
+  return getCitiesByEvent(eventId).map(slugify);
+}
+
+export function getAllVenueSlugs(eventId: string): string[] {
+  return getVenuesByEvent(eventId).map((v) => v.id);
 }

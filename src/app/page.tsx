@@ -1,5 +1,9 @@
+import type { Metadata } from "next";
 import { getEvents } from "@/lib/data";
 import { EventCard } from "@/components/EventCard";
+import { homeMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = homeMetadata();
 
 export default function HomePage() {
   const events = getEvents();
