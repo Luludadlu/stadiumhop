@@ -102,9 +102,10 @@ export async function fetchRealHotels(
         ? `https://places.googleapis.com/v1/${place.photos[0].name}/media?maxWidthPx=400&key=${API_KEY}`
         : getDefaultImage(stars);
 
-      // Build Hotellook affiliate link
+      // Build Skyscanner affiliate link
+      const hotelName = place.displayName?.text || "Hotel";
       const cityName = nearest.venue.city.split("/")[0].trim();
-      const bookingUrl = `https://search.hotellook.com/hotels?destination=${encodeURIComponent(cityName)}&checkIn=${checkin || "2026-06-14"}&checkOut=${checkout || "2026-06-16"}&adults=2`;
+      const bookingUrl = `https://www.skyscanner.net/hotels?q=${encodeURIComponent(hotelName + ", " + cityName)}&checkin=${checkin || "2026-06-14"}&checkout=${checkout || "2026-06-16"}&adults=2&rooms=1`;
 
       hotels.push({
         id: place.id,
