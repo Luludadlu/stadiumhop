@@ -49,6 +49,26 @@ const UPSCALE_NAMES = [
   "SpringHill Suites",
 ];
 
+// Tier-based hotel images from Unsplash (free to use)
+const BUDGET_IMAGES = [
+  "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1626862904461-a0831caec5b1?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1595576508898-0ad5c879a061?w=400&q=80&fit=crop",
+];
+const MID_IMAGES = [
+  "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=400&q=80&fit=crop",
+];
+const UPSCALE_IMAGES = [
+  "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&q=80&fit=crop",
+  "https://images.unsplash.com/photo-1455587734955-081b22074882?w=400&q=80&fit=crop",
+];
+
 // Seeded random for reproducible results
 function seededRandom(seed: number) {
   let s = seed;
@@ -102,6 +122,7 @@ export function generateMockHotels(
         let price: number;
         let stars: number;
         let names: string[];
+        let images: string[];
 
         const tier = rand();
         if (tier < 0.35) {
@@ -109,16 +130,19 @@ export function generateMockHotels(
           price = 35 + Math.floor(rand() * 50); // $35-85
           stars = 2;
           names = BUDGET_NAMES;
+          images = BUDGET_IMAGES;
         } else if (tier < 0.75) {
           // Mid-range
           price = 80 + Math.floor(rand() * 80); // $80-160
           stars = 3;
           names = MID_NAMES;
+          images = MID_IMAGES;
         } else {
           // Upscale
           price = 140 + Math.floor(rand() * 120); // $140-260
           stars = 4;
           names = UPSCALE_NAMES;
+          images = UPSCALE_IMAGES;
         }
 
         const rating = 2.5 + rand() * 2.5; // 2.5-5.0
@@ -167,8 +191,8 @@ export function generateMockHotels(
           price,
           rating: roundedRating,
           stars,
-          imageUrl: `https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80&fit=crop`,
-          bookingUrl: `https://www.booking.com/search.html?ss=${encodeURIComponent(hotelName + ", " + venue.city)}&checkin=${checkin || "2026-06-14"}&checkout=${checkout || "2026-06-16"}`,
+          imageUrl: pickRandom(images, rand),
+          bookingUrl: `https://www.skyscanner.net/hotels/search?entity_id=${encodeURIComponent(venue.city)}&checkin=${checkin || "2026-06-14"}&checkout=${checkout || "2026-06-16"}&rooms=1&adults=2`,
           nearestStation: {
             name: station.name,
             walkMinutes: walkToStation,

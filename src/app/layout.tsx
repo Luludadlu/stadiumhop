@@ -38,13 +38,11 @@ export default function RootLayout({
           src="https://emrldco.com/NTE1MTM2.js?t=515136"
           strategy="afterInteractive"
         />
-        {process.env.NEXT_PUBLIC_ADSENSE_ID && (
-          <Script
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_ID}`}
-            crossOrigin="anonymous"
-            strategy="afterInteractive"
-          />
-        )}
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6966038067085167"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${oswald.variable} font-sans antialiased bg-white text-zinc-900 min-h-screen`}
