@@ -6,6 +6,7 @@ import type { Hotel, Match, Venue } from "@/types";
 import { HotelCard } from "./HotelCard";
 import { SearchFilters } from "./SearchFilters";
 import { MapView } from "./MapView";
+import { getCountryFlag } from "@/lib/flags";
 
 interface SearchResultsProps {
   hotels: Hotel[];
@@ -35,6 +36,8 @@ export function SearchResults({
   const [hoveredHotel, setHoveredHotel] = useState<string | null>(null);
   const [selectedHotel, setSelectedHotel] = useState<string | null>(null);
   const [selectedStation, setSelectedStation] = useState<string | null>(null);
+  const [editCheckin, setEditCheckin] = useState(checkin);
+  const [editCheckout, setEditCheckout] = useState(checkout);
 
   const filtered = useMemo(() => {
     let result = hotels.filter(
@@ -66,20 +69,32 @@ export function SearchResults({
 
   return (
     <div className="flex flex-col" style={{ height: "calc(100vh - 4rem)" }}>
-      {/* Top bar — match teams centered */}
-      <div className="shrink-0 bg-[#F0EBE3] border-b border-[#DDD6CB] px-5 py-2 flex items-center text-sm">
+      {/* Top bar — flags + teams centered */}
+      <div className="shrink-0 bg-[#F0EBE3] border-b border-[#DDD6CB] px-5 py-3 flex items-center">
         <Link
           href={`/${eventSlug}/`}
-          className="text-emerald-600 hover:text-emerald-700 transition-colors font-medium shrink-0"
+          className="text-emerald-600 hover:text-emerald-700 transition-colors font-medium shrink-0 text-sm"
         >
           &larr; {eventName}
         </Link>
-        <div className="flex-1 text-center">
-          {matches.map((match) => (
-            <span key={match.id} className="font-semibold text-zinc-800">
-              {match.teams[0]} vs {match.teams[1]}
-            </span>
-          ))}
+        <div className="flex-1 flex items-center justify-center gap-3">
+          {matches.map((match) => {
+            const flag1 = getCountryFlag(match.teams[0]);
+            const flag2 = getCountryFlag(match.teams[1]);
+            return (
+              <div key={match.id} className="flex items-center gap-3">
+                {flag1 && <span className="text-2xl">{flag1}</span>}
+                <span className="font-bold text-lg text-zinc-800 tracking-tight">
+                  {match.teams[0]}
+                </span>
+                <span className="text-zinc-400 text-sm font-medium">vs</span>
+                <span className="font-bold text-lg text-zinc-800 tracking-tight">
+                  {match.teams[1]}
+                </span>
+                {flag2 && <span className="text-2xl">{flag2}</span>}
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -118,23 +133,39 @@ export function SearchResults({
 
         {/* Hotel panel */}
         <div className="w-[40%] flex flex-col bg-[#F0EBE3]">
-          {/* Row 1: date, venue, checkin */}
-          <div className="shrink-0 border-b border-[#DDD6CB] px-4 py-2 flex items-center gap-2 text-sm text-zinc-500 flex-wrap">
+          {/* Row 1: venue, match time, editable dates */}
+          <div className="shrink-0 border-b border-[#DDD6CB] px-4 py-3 space-y-1.5">
             {matches.map((match) => {
               const venue = venues.find((v) => v.id === match.venueId);
               return (
-                <span key={match.id}>
-                  {match.date} · {match.time}
-                  {venue && ` · ${venue.name}`}
-                </span>
+                <div key={match.id} className="flex items-center gap-2">
+                  {venue && (
+                    <span className="font-bold text-base text-zinc-800">
+                      {venue.name}
+                    </span>
+                  )}
+                  <span className="text-sm text-zinc-400">
+                    {match.date} · {match.time}
+                  </span>
+                </div>
               );
             })}
-            {checkin && checkout && (
-              <>
-                <span className="text-zinc-300">|</span>
-                <span>{checkin} → {checkout}</span>
-              </>
-            )}
+            <div className="flex items-center gap-2 pt-1">
+              <label className="text-xs text-zinc-500">Check-in</label>
+              <input
+                type="date"
+                value={editCheckin}
+                onChange={(e) => setEditCheckin(e.target.value)}
+                className="rounded-md border border-[#DDD6CB] bg-white px-2 py-1 text-sm text-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              />
+              <label className="text-xs text-zinc-500">Check-out</label>
+              <input
+                type="date"
+                value={editCheckout}
+                onChange={(e) => setEditCheckout(e.target.value)}
+                className="rounded-md border border-[#DDD6CB] bg-white px-2 py-1 text-sm text-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              />
+            </div>
           </div>
 
           {/* Row 2: filters */}
