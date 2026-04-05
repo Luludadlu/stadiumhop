@@ -117,7 +117,7 @@ Transit accessibility is a better hotel-sorting dimension than distance for even
 
 | Stream | Timing | Details |
 |---|---|---|
-| Hotel affiliate commission | v1 (POC) | Travelpayouts (Booking.com, Agoda, Hostelworld). Production: Skyscanner internal |
+| Hotel affiliate commission | v1 (POC) | Mock hotel data with Booking.com deep links. Production: Skyscanner internal API |
 | Flight affiliate commission | v1 | Skyscanner affiliate links with pre-filled dates/routes |
 | Google Ads | v1 | Display ads on search results and event pages — offsets Google Maps API costs from launch |
 
@@ -147,7 +147,7 @@ No. Fully open. Skyscanner login optional for future saved trips feature.
 
 | Data | Source | Notes |
 |---|---|---|
-| Hotel inventory + pricing | Travelpayouts API (POC) → Skyscanner internal API (production) | POC uses Travelpayouts (free affiliate, Booking.com/Agoda/Hostelworld). Production migrates to Skyscanner internal API |
+| Hotel inventory + pricing | Mock data (POC) → Skyscanner internal API (production) | POC uses realistic mock hotels with Booking.com deep links. Production migrates to Skyscanner internal API |
 | Flight pricing + deep links | Skyscanner internal API | Real-time |
 | Event schedules | FIFA official → future: Ticketmaster/Bandsintown APIs | Static per event, updated periodically |
 | Venue locations + transit stations | Pre-computed via Google Maps | Stored as static data |

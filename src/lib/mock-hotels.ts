@@ -1,6 +1,5 @@
 import type { Hotel } from "@/types";
 import type { Venue } from "@/types";
-import { buildAffiliateBookingUrl } from "./travelpayouts";
 
 // Hotel name templates by city character
 const HOTEL_CHAINS = [
@@ -74,9 +73,11 @@ export function generateMockHotels(
     minRating?: number;
     maxPrice?: number;
     seed?: number;
+    checkin?: string;
+    checkout?: string;
   } = {},
 ): Hotel[] {
-  const { maxTransit = 90, minRating = 0, maxPrice = 999, seed = 42 } = options;
+  const { maxTransit = 90, minRating = 0, maxPrice = 999, seed = 42, checkin, checkout } = options;
   const rand = seededRandom(seed);
   const hotels: Hotel[] = [];
   let idCounter = 1;
@@ -167,7 +168,7 @@ export function generateMockHotels(
           rating: roundedRating,
           stars,
           imageUrl: `https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80&fit=crop`,
-          bookingUrl: buildAffiliateBookingUrl(venue.city, "2026-06-14", "2026-06-16", hotelName),
+          bookingUrl: `https://www.booking.com/search.html?ss=${encodeURIComponent(hotelName + ", " + venue.city)}&checkin=${checkin || "2026-06-14"}&checkout=${checkout || "2026-06-16"}`,
           nearestStation: {
             name: station.name,
             walkMinutes: walkToStation,
