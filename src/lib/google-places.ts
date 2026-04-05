@@ -25,17 +25,26 @@ export async function fetchRealHotels(
     maxResults?: number;
   } = {},
 ): Promise<Hotel[]> {
-  const { maxTransit = 90, checkin, checkout, maxResults = 40 } = options;
+  const { maxTransit = 120, checkin, checkout, maxResults = 40 } = options;
 
   if (!API_KEY) {
     console.warn("No Google Places API key configured — returning empty hotels");
     return [];
   }
 
-  // Collect unique search locations (transit stations)
+  // Collect search locations: venue itself + transit stations
   const searchPoints: { lat: number; lng: number; station: string; venue: Venue }[] = [];
 
   for (const venue of venues) {
+    // Always search around the venue itself (5km radius)
+    searchPoints.push({
+      lat: venue.coords.lat,
+      lng: venue.coords.lng,
+      station: venue.name,
+      venue,
+    });
+
+    // Also search around transit stations
     for (const station of venue.transitStations) {
       const totalStationTime = station.transitMinutes + station.walkMinutes;
       if (totalStationTime > maxTransit) continue;
@@ -48,12 +57,15 @@ export async function fetchRealHotels(
     }
   }
 
-  // Limit to ~6 stations to avoid too many API calls
-  const limitedPoints = searchPoints.slice(0, 6);
+  // Limit to ~8 search points to avoid too many API calls
+  const limitedPoints = searchPoints.slice(0, 8);
 
-  // Fetch hotels near each station in parallel
+  // Fetch hotels near each point in parallel
+  // Use larger radius for venue center, smaller for stations
   const allResults = await Promise.all(
-    limitedPoints.map((pt) => searchNearbyHotels(pt.lat, pt.lng, 2000)),
+    limitedPoints.map((pt, i) =>
+      searchNearbyHotels(pt.lat, pt.lng, i === 0 ? 5000 : 3000),
+    ),
   );
 
   // Merge and deduplicate by place ID
@@ -135,7 +147,7 @@ async function searchNearbyHotels(
   const url = "https://places.googleapis.com/v1/places:searchNearby";
 
   const body = {
-    includedTypes: ["hotel", "lodging"],
+    includedTypes: ["lodging"],
     maxResultCount: 20,
     locationRestriction: {
       circle: {
