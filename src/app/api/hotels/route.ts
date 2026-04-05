@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getVenue } from "@/lib/data";
+import { fetchRealHotels } from "@/lib/google-places";
 import { generateMockHotels } from "@/lib/mock-hotels";
 import type { Venue } from "@/types";
 
@@ -11,6 +12,8 @@ export async function GET(request: NextRequest) {
   const maxPrice = Number(searchParams.get("maxPrice")) || 999;
   const minRating = Number(searchParams.get("minRating")) || 0;
   const sortBy = searchParams.get("sortBy") || "transit";
+  const checkin = searchParams.get("checkin") || undefined;
+  const checkout = searchParams.get("checkout") || undefined;
 
   if (venueIds.length === 0) {
     return NextResponse.json(
@@ -32,8 +35,17 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // Generate hotels with real affiliate booking links
-  let hotels = generateMockHotels(venues, { maxTransit, minRating, maxPrice });
+  // Try real hotels first, fall back to mock if API fails
+  let hotels = await fetchRealHotels(venues, { maxTransit, checkin, checkout });
+
+  if (hotels.length === 0) {
+    hotels = generateMockHotels(venues, { maxTransit, minRating, maxPrice });
+  }
+
+  // Apply filters
+  if (minRating > 0) {
+    hotels = hotels.filter((h) => h.rating >= minRating);
+  }
 
   if (sortBy === "price") {
     hotels.sort((a, b) => a.price - b.price);

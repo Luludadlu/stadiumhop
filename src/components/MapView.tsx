@@ -135,7 +135,7 @@ function HotelMarkerDot({
           transition: "all 0.15s ease",
         }}
       >
-        ${hotel.price}
+        {hotel.price > 0 ? `$${hotel.price}` : hotel.rating > 0 ? `★${hotel.rating}` : "Hotel"}
       </div>
     );
   }

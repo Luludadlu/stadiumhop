@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getEvent, getMatch, getVenue } from "@/lib/data";
+import { fetchRealHotels } from "@/lib/google-places";
 import { generateMockHotels } from "@/lib/mock-hotels";
 import { SearchResults } from "@/components/SearchResults";
 import type { Venue } from "@/types";
@@ -62,8 +63,14 @@ export default async function SearchPage({
   }
   const venues = [...venueMap.values()];
 
-  // Generate hotels with affiliate booking links
-  const hotels = generateMockHotels(venues, { seed: 42 });
+  // Fetch real hotels from Google Places API, fall back to mock
+  let hotels = await fetchRealHotels(venues, {
+    checkin: checkin || undefined,
+    checkout: checkout || undefined,
+  });
+  if (hotels.length === 0) {
+    hotels = generateMockHotels(venues, { seed: 42 });
+  }
 
   return (
     <SearchResults

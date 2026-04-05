@@ -56,8 +56,9 @@ export function SearchResults({
     return result;
   }, [hotels, maxTransit, maxPrice, minRating, sortBy]);
 
-  const cheapestId = filtered.length
-    ? filtered.reduce((min, h) => (h.price < min.price ? h : min), filtered[0]).id
+  const withPrice = filtered.filter((h) => h.price > 0);
+  const cheapestId = withPrice.length
+    ? withPrice.reduce((min, h) => (h.price < min.price ? h : min), withPrice[0]).id
     : null;
   const closestId = filtered.length
     ? filtered.reduce(

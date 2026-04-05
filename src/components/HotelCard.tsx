@@ -53,10 +53,18 @@ export function HotelCard({
               <div className="text-xs text-amber-500/80 mt-0.5">{stars}</div>
             </div>
             <div className="text-right shrink-0">
-              <div className="text-lg font-bold text-emerald-600">
-                ${hotel.price}
-              </div>
-              <div className="text-xs text-zinc-400">per night</div>
+              {hotel.price > 0 ? (
+                <>
+                  <div className="text-lg font-bold text-emerald-600">
+                    ${hotel.price}
+                  </div>
+                  <div className="text-xs text-zinc-400">per night</div>
+                </>
+              ) : (
+                <div className="text-sm font-semibold text-emerald-600">
+                  Check price &rarr;
+                </div>
+              )}
             </div>
           </div>
 
