@@ -22,7 +22,7 @@ export function SearchFilters({
   onSortByChange,
 }: SearchFiltersProps) {
   return (
-    <div className="flex flex-wrap items-center justify-end gap-2">
+    <div className="flex items-center justify-end gap-2 overflow-x-auto">
       {/* Max transit time */}
       <div className="flex items-center gap-2">
         <label className="text-xs text-zinc-500 whitespace-nowrap">

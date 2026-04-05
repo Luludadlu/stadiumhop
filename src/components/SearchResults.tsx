@@ -118,7 +118,7 @@ export function SearchResults({
         <div className="w-[40%] flex flex-col bg-[#F0EBE3]">
           {/* Match info + filters header */}
           <div className="shrink-0 border-b border-[#DDD6CB] px-4 py-2.5 space-y-2">
-            {/* Row 1: match info + dates — single line */}
+            {/* Row 1: match info + dates on one line */}
             <div className="flex items-center gap-2 flex-wrap">
               {matches.map((match) => {
                 const venue = venues.find((v) => v.id === match.venueId);
@@ -134,14 +134,14 @@ export function SearchResults({
                       {match.date} · {match.time}
                       {venue && ` · ${venue.name}`}
                     </span>
+                    {checkin && checkout && (
+                      <span className="text-zinc-400 border-l border-[#DDD6CB] pl-2">
+                        {checkin} → {checkout}
+                      </span>
+                    )}
                   </div>
                 );
               })}
-              {checkin && checkout && (
-                <div className="rounded-lg border border-[#DDD6CB] bg-white px-3 py-1.5 text-sm text-zinc-500">
-                  {checkin} → {checkout}
-                </div>
-              )}
             </div>
             {/* Row 2: filters + sort — single line */}
             <SearchFilters
