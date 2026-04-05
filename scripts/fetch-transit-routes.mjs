@@ -88,8 +88,14 @@ async function processVenue(venue) {
           for (const step of leg.steps) {
             if (step.travelMode !== "TRANSIT" || !step.transitDetails) continue;
             const td = step.transitDetails;
+
+            // Only keep rail/subway/tram — skip buses
+            const vehicleType = td.transitLine?.vehicle?.type || "";
+            const RAIL_TYPES = new Set(["RAIL", "HEAVY_RAIL", "COMMUTER_TRAIN", "SUBWAY", "METRO_RAIL", "LIGHT_RAIL", "TRAM", "MONORAIL", "FERRY"]);
+            if (vehicleType && !RAIL_TYPES.has(vehicleType)) continue;
+
             const lineName = td.transitLine?.name || td.transitLine?.nameShort || "Unknown";
-            const lineColor = td.transitLine?.color || TYPE_COLORS[td.transitLine?.vehicle?.type] || "#0077C0";
+            const lineColor = td.transitLine?.color || TYPE_COLORS[vehicleType] || "#0077C0";
 
             if (!lineMap.has(lineName)) {
               lineMap.set(lineName, { color: lineColor, stops: new Map(), polyPoints: [] });
