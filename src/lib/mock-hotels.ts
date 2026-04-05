@@ -192,7 +192,7 @@ export function generateMockHotels(
           rating: roundedRating,
           stars,
           imageUrl: pickRandom(images, rand),
-          bookingUrl: `https://www.skyscanner.net/hotels/search?entity_id=${encodeURIComponent(venue.city)}&checkin=${checkin || "2026-06-14"}&checkout=${checkout || "2026-06-16"}&rooms=1&adults=2`,
+          bookingUrl: `https://www.skyscanner.net/hotels?q=${encodeURIComponent(hotelName + ", " + venue.city)}&checkin=${checkin || "2026-06-14"}&checkout=${checkout || "2026-06-16"}&adults=2&rooms=1`,
           nearestStation: {
             name: station.name,
             walkMinutes: walkToStation,
