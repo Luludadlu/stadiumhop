@@ -66,19 +66,21 @@ export function SearchResults({
 
   return (
     <div className="flex flex-col" style={{ height: "calc(100vh - 4rem)" }}>
-      {/* Top bar */}
-      <div className="shrink-0 bg-[#F0EBE3] border-b border-[#DDD6CB] px-5 py-2 flex items-center gap-3 text-sm">
+      {/* Top bar — match teams centered */}
+      <div className="shrink-0 bg-[#F0EBE3] border-b border-[#DDD6CB] px-5 py-2 flex items-center text-sm">
         <Link
           href={`/${eventSlug}/`}
-          className="text-emerald-600 hover:text-emerald-700 transition-colors font-medium"
+          className="text-emerald-600 hover:text-emerald-700 transition-colors font-medium shrink-0"
         >
           &larr; {eventName}
         </Link>
-        <div className="h-4 w-px bg-[#C8C1B6]" />
-        <span className="text-zinc-500">
-          {filtered.length} hotel{filtered.length !== 1 ? "s" : ""} near{" "}
-          {venues.length} venue{venues.length > 1 ? "s" : ""}
-        </span>
+        <div className="flex-1 text-center">
+          {matches.map((match) => (
+            <span key={match.id} className="font-semibold text-zinc-800">
+              {match.teams[0]} vs {match.teams[1]}
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Split layout */}
@@ -116,60 +118,65 @@ export function SearchResults({
 
         {/* Hotel panel */}
         <div className="w-[40%] flex flex-col bg-[#F0EBE3]">
-          {/* Match info + filters header */}
-          <div className="shrink-0 border-b border-[#DDD6CB] px-4 py-2.5 space-y-2">
-            {/* Row 1: match info + dates on one line */}
-            <div className="flex items-center gap-2 flex-wrap">
-              {matches.map((match) => {
-                const venue = venues.find((v) => v.id === match.venueId);
-                return (
-                  <div
-                    key={match.id}
-                    className="flex items-center gap-2 rounded-lg border border-[#DDD6CB] bg-white px-3 py-1.5 text-sm"
-                  >
-                    <span className="font-semibold text-zinc-800">
-                      {match.teams[0]} vs {match.teams[1]}
-                    </span>
-                    <span className="text-zinc-400">
-                      {match.date} · {match.time}
-                      {venue && ` · ${venue.name}`}
-                    </span>
-                    {checkin && checkout && (
-                      <span className="text-zinc-400 border-l border-[#DDD6CB] pl-2">
-                        {checkin} → {checkout}
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-            {/* Row 2: filters + sort — single line */}
+          {/* Row 1: date, venue, checkin */}
+          <div className="shrink-0 border-b border-[#DDD6CB] px-4 py-2 flex items-center gap-2 text-sm text-zinc-500 flex-wrap">
+            {matches.map((match) => {
+              const venue = venues.find((v) => v.id === match.venueId);
+              return (
+                <span key={match.id}>
+                  {match.date} · {match.time}
+                  {venue && ` · ${venue.name}`}
+                </span>
+              );
+            })}
+            {checkin && checkout && (
+              <>
+                <span className="text-zinc-300">|</span>
+                <span>{checkin} → {checkout}</span>
+              </>
+            )}
+          </div>
+
+          {/* Row 2: filters */}
+          <div className="shrink-0 border-b border-[#DDD6CB] px-4 py-2">
             <SearchFilters
               maxTransit={maxTransit}
               maxPrice={maxPrice}
               minRating={minRating}
-              sortBy={sortBy}
               onMaxTransitChange={setMaxTransit}
               onMaxPriceChange={setMaxPrice}
               onMinRatingChange={setMinRating}
-              onSortByChange={setSortBy}
             />
           </div>
 
-          {/* Count + station filter */}
-          <div className="shrink-0 px-4 py-2.5 border-b border-[#DDD6CB] flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-zinc-700">
+          {/* Row 3: hotel count + sort + station filter */}
+          <div className="shrink-0 px-4 py-2 border-b border-[#DDD6CB] flex items-center justify-between gap-2">
+            <h3 className="text-sm font-semibold text-zinc-700 shrink-0">
               {filtered.length} hotel{filtered.length !== 1 ? "s" : ""} found
             </h3>
-            {selectedStation && (
-              <button
-                onClick={() => setSelectedStation(null)}
-                className="text-xs text-cyan-600 hover:text-cyan-700 flex items-center gap-1"
-              >
-                <span className="inline-block w-2 h-2 rounded-full bg-cyan-600" />
-                {selectedStation} &times;
-              </button>
-            )}
+            <div className="flex items-center gap-3">
+              {selectedStation && (
+                <button
+                  onClick={() => setSelectedStation(null)}
+                  className="text-xs text-cyan-600 hover:text-cyan-700 flex items-center gap-1 shrink-0"
+                >
+                  <span className="inline-block w-2 h-2 rounded-full bg-cyan-600" />
+                  {selectedStation} &times;
+                </button>
+              )}
+              <div className="flex items-center gap-1.5 shrink-0">
+                <label className="text-xs text-zinc-500">Sort by</label>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as "transit" | "price" | "rating")}
+                  className="rounded-md border border-[#DDD6CB] bg-white px-2 py-1 text-xs font-medium text-zinc-800 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                >
+                  <option value="transit">Transit time</option>
+                  <option value="price">Price</option>
+                  <option value="rating">Rating</option>
+                </select>
+              </div>
+            </div>
           </div>
 
           {/* Hotel cards */}
