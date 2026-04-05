@@ -33,11 +33,11 @@ export async function fetchRealHotels(
   }
 
   // Collect search locations: venue itself + transit stations
-  const searchPoints: { lat: number; lng: number; station: string; venue: Venue }[] = [];
+  const rawPoints: { lat: number; lng: number; station: string; venue: Venue }[] = [];
 
   for (const venue of venues) {
-    // Always search around the venue itself (5km radius)
-    searchPoints.push({
+    // Always search around the venue itself
+    rawPoints.push({
       lat: venue.coords.lat,
       lng: venue.coords.lng,
       station: venue.name,
@@ -48,7 +48,7 @@ export async function fetchRealHotels(
     for (const station of venue.transitStations) {
       const totalStationTime = station.transitMinutes + station.walkMinutes;
       if (totalStationTime > maxTransit) continue;
-      searchPoints.push({
+      rawPoints.push({
         lat: station.coords.lat,
         lng: station.coords.lng,
         station: station.name,
@@ -57,15 +57,22 @@ export async function fetchRealHotels(
     }
   }
 
-  // Limit to ~8 search points to avoid too many API calls
-  const limitedPoints = searchPoints.slice(0, 8);
+  // Deduplicate search points that are within 1.5km of each other
+  const searchPoints: typeof rawPoints = [];
+  for (const pt of rawPoints) {
+    const tooClose = searchPoints.some(
+      (existing) => haversineKm(pt.lat, pt.lng, existing.lat, existing.lng) < 1.5,
+    );
+    if (!tooClose) searchPoints.push(pt);
+  }
+
+  // Limit to ~10 search points
+  const limitedPoints = searchPoints.slice(0, 10);
 
   // Fetch hotels near each point in parallel
-  // Use larger radius for venue center, smaller for stations
+  // Use 5km radius for all points to maximize coverage
   const allResults = await Promise.all(
-    limitedPoints.map((pt, i) =>
-      searchNearbyHotels(pt.lat, pt.lng, i === 0 ? 5000 : 3000),
-    ),
+    limitedPoints.map((pt) => searchNearbyHotels(pt.lat, pt.lng, 5000)),
   );
 
   // Merge and deduplicate by place ID
